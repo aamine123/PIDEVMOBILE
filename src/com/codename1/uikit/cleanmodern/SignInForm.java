@@ -32,7 +32,7 @@ import com.codename1.ui.util.Resources;
  * @author Shai Almog
  */
 public class SignInForm extends BaseForm {
-
+ 
     public SignInForm(Resources res) {
         super(new BorderLayout());
         
