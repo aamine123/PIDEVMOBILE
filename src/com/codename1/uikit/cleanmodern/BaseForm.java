@@ -36,7 +36,7 @@ public class BaseForm extends Form {
 
     public BaseForm() {
     }
-  
+
     public BaseForm(Layout contentPaneLayout) {
         super(contentPaneLayout);
     }
@@ -76,7 +76,8 @@ public class BaseForm extends Form {
                         new Label(res.getImage("profile-pic.jpg"), "PictureWhiteBackgrond"))
         ));
         
-        tb.addMaterialCommandToSideMenu("Newsfeed", FontImage.MATERIAL_UPDATE, e -> new com.codename1.uikit.cleanmodern.NewsfeedForm(res).show());
+        tb.addMaterialCommandToSideMenu("Sujet", FontImage.MATERIAL_UPDATE, e -> new com.codename1.uikit.cleanmodern.sujetslist(res).show());
+        tb.addMaterialCommandToSideMenu("Posts", FontImage.MATERIAL_UPDATE, e -> new com.codename1.uikit.cleanmodern.Posts(res).show());
         tb.addMaterialCommandToSideMenu("Profile", FontImage.MATERIAL_SETTINGS, e -> new com.codename1.uikit.cleanmodern.ProfileForm(res).show());
         tb.addMaterialCommandToSideMenu("Logout", FontImage.MATERIAL_EXIT_TO_APP, e -> new WalkthruForm(res).show());
     }
