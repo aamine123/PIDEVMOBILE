@@ -1,9 +1,9 @@
 package gui;
 
-import com.codename1.components.ImageViewer;
-import com.codename1.components.ScaleImageLabel;
-import com.codename1.components.SpanLabel;
-import com.codename1.components.ToastBar;
+import com.codename1.components.*;
+import com.codename1.db.Cursor;
+import com.codename1.db.Database;
+import com.codename1.db.Row;
 import com.codename1.ui.*;
 import com.codename1.ui.events.ActionEvent;
 import com.codename1.ui.events.ActionListener;
@@ -13,6 +13,8 @@ import com.codename1.ui.util.Resources;
 import com.codename1.uikit.cleanmodern.BaseForm;
 import entities.Product;
 import services.ServiceProduct;
+
+import java.io.IOException;
 
 public class allProducts extends BaseForm {
 
@@ -61,7 +63,7 @@ public class allProducts extends BaseForm {
             addButton(im, p.getName().toString(), false, 0, 0, p);
 
             Button Delete = new Button("Delete");
-           addStringValue("Delete", Delete);
+           //addStringValue("Delete", Delete);
             Delete.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent evt) {
@@ -82,8 +84,39 @@ public class allProducts extends BaseForm {
 
                 }
             });
+            Button btnAddToCart=new Button("add to cart");
+            addStringValue("add to cart", btnAddToCart);
+            btnAddToCart.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent evt) {
+                    try {
+                        Database db=Database.openOrCreate("taland");
+                        
+                        db.execute("create table if not exists cart (id INTEGER UNIQUE, name TEXT, category INTEGER" +
+                                ", price FLOAT, userId INTEGER , date DATE, imgSrc TEXT, validation INTEGER);");
+                        db.execute("insert into cart (id,name,category,price,userId,date,imgSrc,validation)" +
+                                "values("+p.getId()+",'" +
+                                p.getName()+"',"
+                                +1+","+
+                                p.getPrice()+","+
+                                1+","+
+                                null+",'"+
+                                p.getImgSrc()+"',"+
+                                p.getValidation()+")");
+                        System.out.println("here");
+                        db.close();
+
+                    } catch (Exception e) {
+                        System.out.println(e.getMessage());
+                        ToastBar.showMessage("Already added!!",FontImage.MATERIAL_WARNING);
+                    }
+                }
+            });
         }
 
+        FloatingActionButton fab = FloatingActionButton.createFAB(FontImage.MATERIAL_ADD);
+        fab.addActionListener(e -> new addProduct(theme).show());
+        fab.bindFabToContainer(this.getContentPane());
 
 
     }

@@ -26,6 +26,8 @@ import com.codename1.ui.layouts.LayeredLayout;
 import com.codename1.ui.layouts.Layout;
 import com.codename1.ui.plaf.Style;
 import com.codename1.ui.util.Resources;
+import gui.allProducts;
+import gui.cart;
 
 /**
  * Base class for the forms with common functionality
@@ -78,6 +80,9 @@ public class BaseForm extends Form {
         
         tb.addMaterialCommandToSideMenu("Newsfeed", FontImage.MATERIAL_UPDATE, e -> new com.codename1.uikit.cleanmodern.NewsfeedForm(res).show());
         tb.addMaterialCommandToSideMenu("Profile", FontImage.MATERIAL_SETTINGS, e -> new com.codename1.uikit.cleanmodern.ProfileForm(res).show());
+        tb.addMaterialCommandToSideMenu("Store", FontImage.MATERIAL_STORE, e -> new allProducts(res).show());
+        tb.addMaterialCommandToSideMenu("cart", FontImage.MATERIAL_SHOPPING_CART, e -> new cart(res).show());
         tb.addMaterialCommandToSideMenu("Logout", FontImage.MATERIAL_EXIT_TO_APP, e -> new WalkthruForm(res).show());
+
     }
 }

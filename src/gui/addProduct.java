@@ -17,6 +17,7 @@ public class addProduct extends BaseForm {
 
     public addProduct(Resources theme) {
         this.theme = theme;
+
         //super("Newsfeed", BoxLayout.y());
         Toolbar tb = new Toolbar(true);
         setToolbar(tb);
