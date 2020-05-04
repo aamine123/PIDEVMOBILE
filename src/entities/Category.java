@@ -5,6 +5,18 @@ public class Category {
     private String name;
     private int idCategoryMother;
 
+    @Override
+    public String toString() {
+        return "Category{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", idCategoryMother=" + idCategoryMother +
+                '}';
+    }
+
+    public Category() {
+    }
+
     public Category(int id, String name, int idCategoryMother) {
         this.id = id;
         this.name = name;

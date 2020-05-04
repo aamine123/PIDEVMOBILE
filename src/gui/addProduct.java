@@ -8,7 +8,10 @@ import com.codename1.ui.layouts.*;
 import com.codename1.ui.plaf.Style;
 import com.codename1.ui.util.Resources;
 import com.codename1.uikit.cleanmodern.BaseForm;
+import entities.Category;
 import entities.Product;
+import entities.User;
+import services.ServiceCategory;
 import services.ServiceProduct;
 
 public class addProduct extends BaseForm {
@@ -51,12 +54,16 @@ public class addProduct extends BaseForm {
         addStringValue("Price", price);
 
         ComboBox listens=new ComboBox();
-        listens.addItem("Nader Rahman");
-        listens.addItem("Sana Ben Fadhel");
-        listens.addItem("Bassem Htira");
+        try {
+            for (Category c:ServiceCategory.getInstance().allCategories()){
+                listens.addItem(c.getName());
+            }
+        }catch (Exception e){}
+
         listens.setUIID("TextFieldBlack");
         addStringValue("Category", listens);
        // add(listens);
+
 
       Button add=new Button("add");
         addStringValue("add", add);
@@ -68,7 +75,8 @@ public class addProduct extends BaseForm {
               else{
                   try { Product p=new Product(0,productname.getText(),1,Integer.parseInt(price.getText()),
                           0,null,"h",0);
-                      if(ServiceProduct.getInstance().addProduct(p));
+
+                      if(ServiceProduct.getInstance().addProduct(p,listens.getSelectedItem().toString()));
                   }catch (NumberFormatException e){}
 
 
