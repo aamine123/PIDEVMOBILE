@@ -15,13 +15,11 @@ import com.codename1.ui.events.ActionListener;
 import com.codename1.ui.layouts.*;
 import com.codename1.ui.plaf.Style;
 import com.codename1.ui.util.Resources;
-
-
+import entities.Sujet;
+import services.ServiceSujet;
 
 import java.util.ArrayList;
 import java.util.List;
-import entities.Sujet;
-import services.ServiceSujet;
 
 public class sujetslist extends BaseForm {
     private Resources theme;

@@ -81,9 +81,18 @@ public class Sujet {
         return "Sujet{" + "id_f=" + id_f + ", id_user=" + id_user + ", Etat=" + Etat + ", nbre_jaime=" + nbre_jaime + ", strike=" + strike + ", description_f=" + description_f + ", date=" + date + '}';
     }
 
-
-
-
-
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Sujet sujet = (Sujet) o;
+        return id_f == sujet.id_f &&
+                id_user == sujet.id_user &&
+                Etat == sujet.Etat &&
+                nbre_jaime == sujet.nbre_jaime &&
+                strike == sujet.strike &&
+                description_f.equals(sujet.description_f) &&
+                date.equals(sujet.date);
+    }
 
 }

@@ -3,12 +3,12 @@ package services;
 import com.codename1.io.*;
 import com.codename1.ui.events.ActionListener;
 import entities.Posts;
+import entities.Sujet;
+import entities.User;
 import utils.Statics;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class ServicePosts {
     public ArrayList<Posts> Posts;
@@ -39,16 +39,18 @@ public class ServicePosts {
             for(Map<String,Object> obj : list){
                 Posts p = new Posts();
 
-                /*float id = Float.parseFloat(obj.get("idPost").toString());
-                p.setIdPost((int)id);
-                float idU = Float.parseFloat(obj.get("idU").toString());
-                p.setIdU((int)idU);
+                float idPost = Float.parseFloat(obj.get("idpost").toString());
+                p.setIdPost((int)idPost);
+                Object idu = obj.get("idu");
+                LinkedHashMap<Object,Object> lhm = new LinkedHashMap<>();
+                lhm=(LinkedHashMap<Object,Object>)obj.get("idu");
+                p.setIdU(lhm);
                 float nbrlikes = Float.parseFloat(obj.get("nbrlikes").toString());
                 p.setNbrlikes((int)nbrlikes);
                 float nbrcomments = Float.parseFloat(obj.get("nbrcomments").toString());
-                p.setNbrcomments((int)nbrcomments);*/
+                p.setNbrcomments((int)nbrcomments);
                 p.setDescription(obj.get("description").toString());
-                p.setImage_name(obj.get("image_name").toString());
+                p.setImage_name(obj.get("imageName").toString());
                 float type = Float.parseFloat(obj.get("type").toString());
                 p.setType((int)type);
                 float archive = Float.parseFloat(obj.get("archive").toString());
@@ -68,7 +70,6 @@ public class ServicePosts {
 
     public ArrayList<Posts> getAllPosts(){
         String url = Statics.BASE_URL+"Posts/"+"GetAllPosts";
-        System.out.print("url :"+url);
         req.setUrl(url);
         req.setPost(false);
         req.addResponseListener(new ActionListener<NetworkEvent>() {

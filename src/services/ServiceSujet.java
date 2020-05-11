@@ -10,7 +10,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-
 public class ServiceSujet {
     public ArrayList<Sujet> Sujets;
     public static ServiceSujet instance=null;
@@ -51,6 +50,7 @@ public class ServiceSujet {
                 t.setDescription_f(obj.get("descriptionF").toString());
 
 
+
                 //Ajouter la tâche extraite de la réponse Json à la liste
                 Sujets.add(t);
             }
@@ -69,6 +69,7 @@ public class ServiceSujet {
 
     public ArrayList<Sujet> getAllTasks(){
         String url = Statics.BASE_URL+"Forum/"+"toussujetsM";
+
         req.setUrl(url);
         req.setPost(false);
         req.addResponseListener(new ActionListener<NetworkEvent>() {
@@ -82,20 +83,7 @@ public class ServiceSujet {
         return Sujets;
     }
 
-    public ArrayList<Sujet> getsubject(Sujet s){
-        String url = Statics.BASE_URL+"Forum/"+"subjectidM/"+s.getId_f();
-        req.setUrl(url);
-        req.setPost(false);
-        req.addResponseListener(new ActionListener<NetworkEvent>() {
-            @Override
-            public void actionPerformed(NetworkEvent evt) {
-                Sujets = parseTasks(new String(req.getResponseData()));
-                req.removeResponseListener(this);
-            }
-        });
-        NetworkManager.getInstance().addToQueueAndWait(req);
-        return Sujets;
-    }
+
 
 
 }

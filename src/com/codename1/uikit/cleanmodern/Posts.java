@@ -19,16 +19,23 @@
 
 package com.codename1.uikit.cleanmodern;
 
+import com.codename1.components.ImageViewer;
 import com.codename1.components.ScaleImageLabel;
 import com.codename1.components.SpanLabel;
 import com.codename1.components.ToastBar;
 import com.codename1.ui.*;
 import com.codename1.ui.layouts.*;
 import com.codename1.ui.plaf.Style;
+import com.codename1.ui.plaf.UIManager;
 import com.codename1.ui.util.Resources;
+import entities.Sujet;
 import services.ServicePosts;
+import services.ServiceSujet;
 
+
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 
 /**
  * The newsfeed form
@@ -37,11 +44,12 @@ import java.util.ArrayList;
  */
 public class Posts extends BaseForm {
     private Resources theme;
+    private Resources res;
     private ServicePosts SP;
     private ArrayList<entities.Posts> posts;
+    private Container listpostsscont;
 
     public Posts(Resources res) {
-
         super("Newsfeed", BoxLayout.y());
         Toolbar tb = new Toolbar(true);
         setToolbar(tb);
@@ -54,18 +62,16 @@ public class Posts extends BaseForm {
 
         Tabs swipe = new Tabs();
 
-
         SP = new ServicePosts();
         posts = new ArrayList<>();
         posts = SP.getAllPosts();
-        for (int i = 0; i < posts.size(); i++) {
-            if (posts.get(i).getType()==1 && posts.get(i).getArchive()==0){
-                addTab(swipe, res.getImage("news-item.jpg"), new Label(), posts.get(i).getNbrlikes()+"Likes", posts.get(i).getNbrcomments()+"Comments", posts.get(i).getDescription());
-            }
-        }
+        listpostsscont = new Container();
 
-        //addTab(swipe, res.getImage("dog.jpg"), new Label(), "100 Likes  ", "66 ", "Dogs are cute: story at 11");
-        //addTab(swipe, res.getImage("dog.jpg"), new Label(), "100 Likes  ", "66 Comments", "youssef are cute: story at 11");
+        addTab(swipe, res.getImage("breadcumb.jpg"), new Label(), "", "", "");
+        addTab(swipe, res.getImage("breadcumb3.jpg"), new Label(), "", "", "");
+
+
+
 
         swipe.setUIID("Container");
         swipe.getContentPane().setUIID("Container");
@@ -137,11 +143,29 @@ public class Posts extends BaseForm {
             updateArrowPosition(barGroup.getRadioButton(barGroup.getSelectedIndex()), arrow);
         });
 
-        addButton(res.getImage("news-item-1.jpg"), "Morbi per tincidunt tellus sit of amet eros laoreet.", false, 26, 32);
-        addButton(res.getImage("news-item-2.jpg"), "Fusce ornare cursus masspretium tortor integer placera.", true, 15, 21);
-        addButton(res.getImage("news-item-3.jpg"), "Maecenas eu risus blanscelerisque massa non amcorpe.", false, 36, 15);
-        addButton(res.getImage("news-item-4.jpg"), "Pellentesque non lorem diam. Proin at ex sollicia.", false, 11, 9);
+        //addButton(res.getImage("news-item-1.jpg"), "Morbi per tincidunt tellus sit of amet eros laoreet.", false, 26, 32);
+
+
+
+
+        for (int i = 0; i < posts.size(); i++) {
+            String urlimage = "http://localhost/taland/web/uploads/posts/"+posts.get(i).getImage_name();
+            String extension =posts.get(i).getImage_name().charAt(posts.get(i).getImage_name().length()-3)+""+posts.get(i).getImage_name().charAt(posts.get(i).getImage_name().length()-2)+""+posts.get(i).getImage_name().charAt(posts.get(i).getImage_name().length()-1);
+            //System.out.println("image :"+posts.get(i).getImage_name()+" extension :"+extension.toLowerCase());
+            if (posts.get(i).getType()==0 && posts.get(i).getArchive()==0){
+                if (extension.equals("jpg") || extension.toLowerCase().equals("png")){
+                    EncodedImage enc3 = EncodedImage.createFromImage(res.getImage("dog.jpg"), false);
+                    Image image = URLImage.createToStorage(enc3,"stock"+posts.get(i).getIdPost()+".png", urlimage);
+                    addButton(image,posts.get(i).getIdU(),posts.get(i).getDescription(), false, posts.get(i).getNbrlikes(), posts.get(i).getNbrcomments());
+                }else if (extension.equals("jpg")){
+
+                    //System.out.println("i can't plot this because "+posts.get(i).getImage_name()+" with extension "+extension);
+                }
+            }
+        }
     }
+
+
 
     private void updateArrowPosition(Button b, Label arrow) {
         arrow.getUnselectedStyle().setMargin(LEFT, b.getX() + b.getWidth() / 2 - arrow.getWidth() / 2);
@@ -158,12 +182,9 @@ public class Posts extends BaseForm {
         Label likes = new Label(likesStr);
         Style heartStyle = new Style(likes.getUnselectedStyle());
         heartStyle.setFgColor(0xff2d55);
-        FontImage heartImage = FontImage.createMaterial(FontImage.MATERIAL_FAVORITE, heartStyle);
-        likes.setIcon(heartImage);
         likes.setTextPosition(RIGHT);
 
         Label comments = new Label(commentsStr);
-        FontImage.setMaterialIcon(comments, FontImage.MATERIAL_CHAT);
         if(img.getHeight() > Display.getInstance().getDisplayHeight() / 2) {
             img = img.scaledHeight(Display.getInstance().getDisplayHeight() / 2);
         }
@@ -188,7 +209,7 @@ public class Posts extends BaseForm {
         swipe.addTab("", page1);
     }
 
-    private void addButton(Image img, String title, boolean liked, int likeCount, int commentCount) {
+    private void addButton(Image img, LinkedHashMap<Object,Object> user, String title, boolean liked, int likeCount, int commentCount) {
         int height = Display.getInstance().convertToPixels(11.5f);
         int width = Display.getInstance().convertToPixels(14f);
         Button image = new Button(img.fill(width, height));
@@ -198,6 +219,11 @@ public class Posts extends BaseForm {
         TextArea ta = new TextArea(title);
         ta.setUIID("NewsTopLine");
         ta.setEditable(false);
+
+
+        TextArea ua = new TextArea((String) user.get("firstname")+" "+(String) user.get("lastname"));
+        ua.setUIID("NewsTopLine");
+        ua.setEditable(false);
 
         Label likes = new Label(likeCount + " Likes  ", "NewsBottomLine");
         likes.setTextPosition(RIGHT);
@@ -215,12 +241,16 @@ public class Posts extends BaseForm {
 
         cnt.add(BorderLayout.CENTER,
                 BoxLayout.encloseY(
+                        ua,
                         ta,
                         BoxLayout.encloseX(likes, comments)
                 ));
         add(cnt);
-        image.addActionListener(e -> ToastBar.showMessage(title, FontImage.MATERIAL_INFO));
+        image.addActionListener(e -> ToastBar.showMessage((String) user.get("firstname")+" "+(String) user.get("lastname")+" : \n"+title, FontImage.MATERIAL_INFO));
     }
+
+
+
 
     private void bindButtonSelection(Button b, Label arrow) {
         b.addActionListener(e -> {
@@ -229,4 +259,7 @@ public class Posts extends BaseForm {
             }
         });
     }
+
+
+
 }

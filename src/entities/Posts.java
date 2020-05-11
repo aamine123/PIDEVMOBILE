@@ -1,10 +1,11 @@
 package entities;
 
 import java.util.Date;
+import java.util.LinkedHashMap;
 
 public class Posts {
     private int idPost;
-    private int idU;
+    private LinkedHashMap<Object,Object> idU;
     private String description;
     private int nbrlikes;
     private int nbrcomments;
@@ -17,7 +18,7 @@ public class Posts {
 
     }
 
-    public Posts(int idPost, int idU, String description, int nbrlikes, int nbrcomments, Date dateCreation, String image_name, int type, int archive) {
+    public Posts(int idPost, LinkedHashMap<Object,Object> idU, String description, int nbrlikes, int nbrcomments, Date dateCreation, String image_name, int type, int archive) {
         this.idPost = idPost;
         this.idU = idU;
         this.description = description;
@@ -37,11 +38,11 @@ public class Posts {
         this.idPost = idPost;
     }
 
-    public int getIdU() {
+    public LinkedHashMap<Object,Object> getIdU() {
         return idU;
     }
 
-    public void setIdU(int idU) {
+    public void setIdU(LinkedHashMap<Object,Object> idU) {
         this.idU = idU;
     }
 
