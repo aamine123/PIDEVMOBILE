@@ -20,9 +20,11 @@ public class ServiceProduct {
     private ConnectionRequest req;
     public boolean resultOK;
     private User loggedInUser;
+    private User user;
     public ServiceProduct(){
         req=new ConnectionRequest();
-        loggedInUser=new User(10,"eya");;
+        loggedInUser=new User(10,"eya","lookil","eya");
+
     }
 
     public static ServiceProduct getInstance(){
@@ -78,6 +80,7 @@ public class ServiceProduct {
         return products;
     }
 
+
     public ArrayList<Product> allProducts(){
         String url = Statics.BASE_URL+"Products/allProductsMobile";
         req.setUrl(url);
@@ -91,6 +94,48 @@ public class ServiceProduct {
         });
         NetworkManager.getInstance().addToQueueAndWait(req);
         return products;
+    }
+    public User parseUser(String jsonText){
+        user=new User();
+        JSONParser j=new JSONParser();
+        try {
+            Map<String,Object> productsListJson=j.parseJSON(new CharArrayReader(jsonText.toCharArray()));
+            //List<Map<String,Object>> list=(List<Map<String, Object>>)productsListJson.get("root");
+
+           // List<Map<String,Object>> list=(List<Map<String, Object>>)productsListJson.get("root");
+
+
+
+
+                float id=Float.parseFloat(productsListJson.get("id").toString());
+
+                user.setId((int) id);
+                user.setName(productsListJson.get("firstname").toString());
+
+                user.setLastName(productsListJson.get("lastname").toString());
+                user.setEmail(productsListJson.get("email").toString());
+
+        }catch (Exception e){
+            System.out.println(e.getMessage());
+        }
+        return user;
+    }
+
+    public User getProductUserDetails(Product p){
+        String url = Statics.BASE_URL+"Products/getUser/"+p.getUserId();
+        req.setUrl(url);
+        req.setPost(false);
+        req.addResponseListener(new ActionListener<NetworkEvent>() {
+            @Override
+            public void actionPerformed(NetworkEvent evt) {
+                user = parseUser(new String(req.getResponseData()));
+                req.removeResponseListener(this);
+            }
+        });
+        NetworkManager.getInstance().addToQueueAndWait(req);
+
+        return user;
+
     }
 
     public boolean deleteProduct(Product p){
@@ -107,4 +152,6 @@ public class ServiceProduct {
         NetworkManager.getInstance().addToQueueAndWait(req);
         return resultOK;
     }
+
+
 }

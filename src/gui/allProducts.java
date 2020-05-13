@@ -170,7 +170,7 @@ public class allProducts extends BaseForm {
 
         add(cnt);
         image.addActionListener(e -> {
-            new productSingle(res, p).show();
+            new productSingle(res, p,this).show();
         });
     }
 
