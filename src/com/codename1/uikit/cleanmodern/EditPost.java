@@ -36,6 +36,7 @@ import com.codename1.ui.plaf.RoundRectBorder;
 import com.codename1.ui.plaf.Style;
 import com.codename1.ui.util.Resources;
 
+import entities.Posts;
 import services.ServiceLikes;
 import services.ServicePosts;
 import com.codename1.ext.filechooser.FileChooser;
@@ -52,12 +53,12 @@ import java.util.Random;
  *
  * @author Shai Almog
  */
-public class AddPost extends BaseForm {
+public class EditPost extends BaseForm {
     private ServicePosts SP;
     String GlobalPath = "";
     String GlobalExtension = "";
-    public AddPost(Resources res,int length) {
-        super("Add a new post number "+length+1, BoxLayout.y());
+    public EditPost(Resources res, Posts current) {
+        super(current.getDescription(), BoxLayout.y());
         Toolbar tb = new Toolbar(true);
         setToolbar(tb);
         getTitleArea().setUIID("Container");
@@ -119,111 +120,41 @@ public class AddPost extends BaseForm {
         add(LayeredLayout.encloseIn(swipe, radioContainer));
 
 
-        Container f = new Container(BoxLayout.y());
+        String urlimage = "http://localhost/taland/web/uploads/posts/"+current.getImage_name();
+        EncodedImage enc3 = EncodedImage.createFromImage(res.getImage("dog.jpg"), false);
+        Image image = URLImage.createToStorage(enc3,"stock"+current.getImage_name()+".png", urlimage);
 
+        Container single = addButton(current,image,current.getIdU(),current.getDescription(), false, current.getNbrlikes(), current.getNbrcomments());
 
+        String urluser = "http://localhost/taland/web/uploads/posts/"+current.getIdU().get("imageName");
+        Image imageuser = URLImage.createToStorage(enc3,"users"+current.getIdU().get("id")+".png", urluser);
+        ImageViewer imguser = new ImageViewer(imageuser);
 
+        Container cus = new Container(new BorderLayout());
+        cus.add(BorderLayout.WEST,imguser);
 
-        TextField description = new TextField("","whats on your mind ,"+"Youssef"+"?", 50, TextField.ANY);
-        description.getAllStyles().setFgColor(0x5f5f5f);
-        description.getAllStyles().setPaddingBottom(10);
-        description.getAllStyles().setBorder(RoundRectBorder.create().strokeColor(0).
-                strokeOpacity(50).
-                stroke(new Stroke(2, Stroke.CAP_SQUARE, Stroke.JOIN_MITER, 1)));
-        description.getAllStyles().setMarginLeft(1);
-        description.getAllStyles().setMarginRight(1);
-        description.getAllStyles().setMarginTop(1);
-        TextField tup = new TextField("","Path");
-
-        tup.getAllStyles().setFgColor(0x5f5f5f);
-        Button upload=new Button("upload");
-        Label limport = new Label("No file selected");
-        upload.addPointerPressedListener((ei)->{
-            if (FileChooser.isAvailable()) {
-                FileChooser.showOpenDialog(".pdf,application/pdf,.gif,image/gif,.png,image/png,.jpg,image/jpg,.tif,image/tif,.jpeg", e2-> {
-                    String file = (String)e2.getSource();
-                    if (file == null) {
-                        System.out.println("No file was selected");
-                    } else {
-                        String extension = null;
-                        if (file.lastIndexOf(".") > 0) {
-                            extension = file.substring(file.lastIndexOf(".")+1);
-                        }
-                        if ("txt".equals(extension)) {
-                            FileSystemStorage fs = FileSystemStorage.getInstance();
-                            try {
-                                InputStream fis = fs.openInputStream(file);
-                                System.out.println(Util.readToString(fis));
-                            } catch (Exception ex) {
-                                Log.e(ex);
-                            }
-                        } else {
-                            //moveFile(file,)
-                            String path = file.substring(7);
-                            System.out.println("Selected file :"+file.substring(44)+"\n"+"path :"+path);
-                            limport.setText("file imported");
-                            limport.getAllStyles().setFgColor(0x69E781);
-                            tup.setText(path);
-                            GlobalPath=path;
-                            GlobalExtension=file.substring(file.lastIndexOf(".")+1);
-                        }
-                    }
-                });
-            }
+        Label username = new Label(current.getIdU().get("firstname")+" "+current.getIdU().get("lastname"));
+        username.getAllStyles().setFgColor(0x000000);
+        cus.add(BorderLayout.CENTER,username);
+        Label edit = new Label("edit");
+        edit.addPointerPressedListener((e)->{
+            ModifyPost mp = new ModifyPost(res,current);
+            mp.show();
         });
-        Button submitPost = new Button("  Post  ");
-
-        submitPost.addPointerPressedListener((e)->{
-
-            int subname = length+1;
-            Random rand = new Random();
-            int upperbound = 7483647;
-            int int_random = rand.nextInt(upperbound);
-            String Fullname = "MobileGenerated_"+java.time.LocalDate.now()+"_"+subname+"_"+int_random+"."+GlobalExtension;
-            System.out.println(Fullname);
-
-            boolean moving = moveFile(GlobalPath,"C:/wamp64/www/Taland/web/uploads/posts/"+Fullname);
-            System.out.println("moved? :"+moving);
-
-            entities.Posts p = new entities.Posts();
-            p.setImage_name(Fullname);
-            p.setArchive(0);
-            p.setType(0);
-            p.setDescription(description.getText());
-
-            if(ServicePosts.getInstance().addPost(p)){
-
-                ToastBar.Status status = ToastBar.getInstance().createStatus();
-                status.setMessage("Post added");
-                status.show();
-
-                newPosts l = new newPosts(res);
-                l.show();
-            };
-        }
-        );
-
-        Button submitStory = new Button("  Add to your story",res.getImage("photo.png"));
-        Container csub = new Container(BoxLayout.x());
-        Label archiv = new Label("Archiver");
-        archiv.getAllStyles().setFgColor(0xC12222);
-
-        csub.addAll(submitStory,submitPost,archiv);
-
-
-        Container cimport = new Container(new BorderLayout());
-
-
-        cimport.add(BorderLayout.WEST,limport);
-        cimport.add(BorderLayout.EAST,upload);
+        cus.add(BorderLayout.EAST,edit);
+        add(cus);
+        add(single);
 
 
 
-        f.addAll(description,cimport);
 
-        add(f);
-        csub.getAllStyles().setMarginTop(750);
-        add(csub);
+
+
+
+
+
+
+
     }
     private void addTab(Tabs swipe, Image img, Label spacer, String likesStr, String commentsStr, String text) {
         int size = Math.min(Display.getInstance().getDisplayWidth(), Display.getInstance().getDisplayHeight());
@@ -260,26 +191,21 @@ public class AddPost extends BaseForm {
 
         swipe.addTab("", page1);
     }
-    private Container addButtonStory(Image img, String title, boolean liked, int likeCount, int commentCount) {
-        int height = Display.getInstance().convertToPixels(34.5f);
-        int width = Display.getInstance().convertToPixels(28f);
+    private Container addButton(Posts p,Image img, LinkedHashMap<Object,Object> user, String title, boolean liked, int likeCount, int commentCount) {
+        int height = Display.getInstance().convertToPixels(61.5f);
+        int width = Display.getInstance().convertToPixels(60f);
         Button image = new Button(img.fill(width, height));
         image.setUIID("Label");
-        //Container cnt = BorderLayout.west(image);
-        Container cnt = new Container(BoxLayout.y());
-        cnt.add(image);
-
-        cnt.setLeadComponent(image);
+        Container cnt = BorderLayout.center(image);
+        //cnt.setLeadComponent(image);
         TextArea ta = new TextArea(title);
         ta.setUIID("NewsTopLine");
         ta.setEditable(false);
 
 
-        TextArea ua = new TextArea("");
-        ua.setUIID("NewsTopLine");
-        ua.setEditable(false);
 
         Label likes = new Label(likeCount + " Likes  ", "NewsBottomLine");
+        likes.getAllStyles().setFgColor(0x5f5f5f);
         likes.setTextPosition(RIGHT);
         if(!liked) {
             FontImage.setMaterialIcon(likes, FontImage.MATERIAL_FAVORITE);
@@ -288,27 +214,38 @@ public class AddPost extends BaseForm {
             s.setFgColor(0x5f5f5f);
             FontImage heartImage = FontImage.createMaterial(FontImage.MATERIAL_FAVORITE, s);
             likes.setIcon(heartImage);
+
         }
         Label comments = new Label(commentCount + " Comments", "NewsBottomLine");
         FontImage.setMaterialIcon(likes, FontImage.MATERIAL_CHAT);
+        comments.getAllStyles().setFgColor(0x5f5f5f);
+
+        Container cua = new Container(new BorderLayout());
 
 
-        /*cnt.add(BorderLayout.CENTER,
+        /*if ((double)(user.get("id"))==15){
+            cua.add(BorderLayout.EAST,navigate);
+        }*/
+
+        Label spacer1 = new Label("aa");
+        spacer1.getAllStyles().setFgColor(0xFFFFFF);
+        cnt.add(BorderLayout.NORTH,cua);
+        cnt.add(BorderLayout.SOUTH,
                 BoxLayout.encloseY(
-                        ua,
+                        BoxLayout.encloseX(likes, comments),
                         ta,
-                        BoxLayout.encloseX(likes, comments)
-                ));*/
+                        spacer1
+                ));
 
-        image.addActionListener(e -> ToastBar.showMessage(title, FontImage.MATERIAL_INFO));
+        //image.addActionListener(e -> ToastBar.showMessage((String) user.get("firstname")+" "+(String) user.get("lastname")+" : \n"+title, FontImage.MATERIAL_INFO));
+
+
+
         return cnt;
 
     }
 
-    public boolean moveFile(String sourcePath, String targetPath) {
-        File fileToMove = new File(sourcePath);
-        return fileToMove.renameTo(new File(targetPath));
-    }
+
 
 
 }

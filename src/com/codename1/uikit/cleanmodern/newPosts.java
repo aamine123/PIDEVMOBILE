@@ -43,7 +43,7 @@ import java.util.LinkedHashMap;
 public class newPosts extends BaseForm {
     private ServicePosts SP;
     private ArrayList<Posts> posts;
-
+    Resources res;
     public newPosts(Resources res) {
         super("Newsfeed", BoxLayout.y());
         Toolbar tb = new Toolbar(true);
@@ -139,20 +139,30 @@ public class newPosts extends BaseForm {
 
 
         for (int i = 0; i < posts.size(); i++) {
+            Posts current = posts.get(i);
+
             String urlimage = "http://localhost/taland/web/uploads/posts/"+posts.get(i).getImage_name();
             String extension =posts.get(i).getImage_name().charAt(posts.get(i).getImage_name().length()-3)+""+posts.get(i).getImage_name().charAt(posts.get(i).getImage_name().length()-2)+""+posts.get(i).getImage_name().charAt(posts.get(i).getImage_name().length()-1);
             //System.out.println("image :"+posts.get(i).getImage_name()+" extension :"+extension.toLowerCase());
             if (posts.get(i).getType()==0 && posts.get(i).getArchive()==0){
                 if (extension.equals("jpg") || extension.toLowerCase().equals("png")){
+
                     EncodedImage enc3 = EncodedImage.createFromImage(res.getImage("dog.jpg"), false);
-                    Image image = URLImage.createToStorage(enc3,"stock"+posts.get(i).getIdPost()+".png", urlimage);
-                    Cpost.add(addButton(image,posts.get(i).getIdU(),posts.get(i).getDescription(), false, posts.get(i).getNbrlikes(), posts.get(i).getNbrcomments()));
+                    Image image = URLImage.createToStorage(enc3,"stock"+posts.get(i).getImage_name()+".png", urlimage);
+                    Label navigate = new Label("navigate");
+                    navigate.getAllStyles().setFgColor(0xC12222);
+                    EditPost ep = new EditPost(res,current);
+                    navigate.addPointerPressedListener((ev)-> {
+                        ep.show();
+                    });
+                    Container single = addButton(posts.get(i),image,posts.get(i).getIdU(),posts.get(i).getDescription(), false, posts.get(i).getNbrlikes(), posts.get(i).getNbrcomments(),navigate);
+                    Cpost.add(single);
                 }
             }
             if (posts.get(i).getType()==1 && posts.get(i).getArchive()==0){
                 if (extension.equals("jpg") || extension.toLowerCase().equals("png")) {
                     EncodedImage enc3 = EncodedImage.createFromImage(res.getImage("dog.jpg"), false);
-                    Image image = URLImage.createToStorage(enc3,"stock"+posts.get(i).getIdPost()+".png", urlimage);
+                    Image image = URLImage.createToStorage(enc3,"stock"+posts.get(i).getImage_name()+".png", urlimage);
                     //Cstories.add(addButtonStory(image,posts.get(i).getIdU(),posts.get(i).getDescription(), false, posts.get(i).getNbrlikes(), posts.get(i).getNbrcomments()));
                     Cstories.addTab("", addButtonStory(image,posts.get(i).getIdU(),posts.get(i).getDescription(), false, posts.get(i).getNbrlikes(), posts.get(i).getNbrcomments()));
                     //addTabStorie(stories, image, posts.get(i).getIdU());
@@ -298,13 +308,15 @@ public class newPosts extends BaseForm {
 
         swipe.addTab("", page1);
     }
-    private Container addButton(Image img, LinkedHashMap<Object,Object> user, String title, boolean liked, int likeCount, int commentCount) {
-        int height = Display.getInstance().convertToPixels(11.5f);
-        int width = Display.getInstance().convertToPixels(14f);
+
+
+    private Container addButton(Posts p,Image img, LinkedHashMap<Object,Object> user, String title, boolean liked, int likeCount, int commentCount,Label navigate) {
+        int height = Display.getInstance().convertToPixels(61.5f);
+        int width = Display.getInstance().convertToPixels(60f);
         Button image = new Button(img.fill(width, height));
         image.setUIID("Label");
-        Container cnt = BorderLayout.west(image);
-        cnt.setLeadComponent(image);
+        Container cnt = BorderLayout.center(image);
+        //cnt.setLeadComponent(image);
         TextArea ta = new TextArea(title);
         ta.setUIID("NewsTopLine");
         ta.setEditable(false);
@@ -330,15 +342,28 @@ public class newPosts extends BaseForm {
         FontImage.setMaterialIcon(likes, FontImage.MATERIAL_CHAT);
         comments.getAllStyles().setFgColor(0x5f5f5f);
 
+        Container cua = new Container(new BorderLayout());
 
-        cnt.add(BorderLayout.CENTER,
+        cua.add(BorderLayout.WEST,ua);
+
+        if ((double)(user.get("id"))==15){
+            cua.add(BorderLayout.EAST,navigate);
+        }
+
+        Label spacer1 = new Label("aa");
+        spacer1.getAllStyles().setFgColor(0xFFFFFF);
+        cnt.add(BorderLayout.NORTH,cua);
+        cnt.add(BorderLayout.SOUTH,
                 BoxLayout.encloseY(
-                        ua,
+                        BoxLayout.encloseX(likes, comments),
                         ta,
-                        BoxLayout.encloseX(likes, comments)
+                        spacer1
                 ));
 
-        image.addActionListener(e -> ToastBar.showMessage((String) user.get("firstname")+" "+(String) user.get("lastname")+" : \n"+title, FontImage.MATERIAL_INFO));
+        //image.addActionListener(e -> ToastBar.showMessage((String) user.get("firstname")+" "+(String) user.get("lastname")+" : \n"+title, FontImage.MATERIAL_INFO));
+
+
+
         return cnt;
 
     }

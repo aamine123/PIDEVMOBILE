@@ -101,4 +101,17 @@ public class Posts {
     public void setArchive(int archive) {
         this.archive = archive;
     }
+
+    @Override
+    public String toString() {
+        return "Posts{" +
+                "id='" + idPost + '\'' +
+                "description='" + description + '\'' +
+                ", nbrlikes=" + nbrlikes +
+                ", nbrcomments=" + nbrcomments +
+                ", image_name='" + image_name + '\'' +
+                ", type=" + type +
+                ", archive=" + archive +
+                '}';
+    }
 }

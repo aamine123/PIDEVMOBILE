@@ -36,6 +36,7 @@ import com.codename1.ui.plaf.RoundRectBorder;
 import com.codename1.ui.plaf.Style;
 import com.codename1.ui.util.Resources;
 
+import entities.Posts;
 import services.ServiceLikes;
 import services.ServicePosts;
 import com.codename1.ext.filechooser.FileChooser;
@@ -52,12 +53,13 @@ import java.util.Random;
  *
  * @author Shai Almog
  */
-public class AddPost extends BaseForm {
+public class ModifyPost extends BaseForm {
     private ServicePosts SP;
     String GlobalPath = "";
     String GlobalExtension = "";
-    public AddPost(Resources res,int length) {
-        super("Add a new post number "+length+1, BoxLayout.y());
+    int changed=0;
+    public ModifyPost(Resources res, Posts current) {
+        super(current.getDescription(), BoxLayout.y());
         Toolbar tb = new Toolbar(true);
         setToolbar(tb);
         getTitleArea().setUIID("Container");
@@ -67,8 +69,8 @@ public class AddPost extends BaseForm {
 
 
         this.getToolbar().addMaterialCommandToLeftBar("Back", FontImage.MATERIAL_ARROW_BACK, (e) -> {
-            newPosts l = new newPosts(res);
-            l.show();
+            EditPost ep = new EditPost(res,current);
+            ep.showBack();
         });
 
         //super.addSideMenu(res);
@@ -133,11 +135,10 @@ public class AddPost extends BaseForm {
         description.getAllStyles().setMarginLeft(1);
         description.getAllStyles().setMarginRight(1);
         description.getAllStyles().setMarginTop(1);
-        TextField tup = new TextField("","Path");
+        description.setText(current.getDescription());
 
-        tup.getAllStyles().setFgColor(0x5f5f5f);
         Button upload=new Button("upload");
-        Label limport = new Label("No file selected");
+        Label limport = new Label(current.getImage_name());
         upload.addPointerPressedListener((ei)->{
             if (FileChooser.isAvailable()) {
                 FileChooser.showOpenDialog(".pdf,application/pdf,.gif,image/gif,.png,image/png,.jpg,image/jpg,.tif,image/tif,.jpeg", e2-> {
@@ -163,49 +164,111 @@ public class AddPost extends BaseForm {
                             System.out.println("Selected file :"+file.substring(44)+"\n"+"path :"+path);
                             limport.setText("file imported");
                             limport.getAllStyles().setFgColor(0x69E781);
-                            tup.setText(path);
                             GlobalPath=path;
                             GlobalExtension=file.substring(file.lastIndexOf(".")+1);
+                            changed=1;
                         }
                     }
                 });
             }
         });
-        Button submitPost = new Button("  Post  ");
+        Button submitPost = new Button(" Edit post ");
 
         submitPost.addPointerPressedListener((e)->{
+                    if (changed==0){
+                        current.setDescription(description.getText());
+                        if(ServicePosts.getInstance().EditPost(current)){
+                            System.out.println("current:"+current);
+                            newPosts l = new newPosts(res);
+                            l.showBack();
+                        }
+                    }else{
+                        //modifier les deux
 
-            int subname = length+1;
-            Random rand = new Random();
-            int upperbound = 7483647;
-            int int_random = rand.nextInt(upperbound);
-            String Fullname = "MobileGenerated_"+java.time.LocalDate.now()+"_"+subname+"_"+int_random+"."+GlobalExtension;
-            System.out.println(Fullname);
+                        Random rand = new Random();
+                        int upperbound = 7483647;
+                        int int_random = rand.nextInt(upperbound);
+                        String Fullname = "MobileGenerated_"+java.time.LocalDate.now()+"_"+int_random+"."+GlobalExtension;
+                        boolean moving = moveFile(GlobalPath,"C:/wamp64/www/Taland/web/uploads/posts/"+Fullname);
+                        System.out.println("moved? :"+moving);
+                        current.setDescription(description.getText());
+                        current.setImage_name(Fullname);
 
-            boolean moving = moveFile(GlobalPath,"C:/wamp64/www/Taland/web/uploads/posts/"+Fullname);
-            System.out.println("moved? :"+moving);
+                        if(ServicePosts.getInstance().EditPost(current)){
+                            System.out.println("current:"+current);
+                            newPosts l = new newPosts(res);
+                            l.showBack();
+                        }
 
-            entities.Posts p = new entities.Posts();
-            p.setImage_name(Fullname);
-            p.setArchive(0);
-            p.setType(0);
-            p.setDescription(description.getText());
-
-            if(ServicePosts.getInstance().addPost(p)){
-
-                ToastBar.Status status = ToastBar.getInstance().createStatus();
-                status.setMessage("Post added");
-                status.show();
-
-                newPosts l = new newPosts(res);
-                l.show();
-            };
-        }
+                    }
+                }
         );
 
         Button submitStory = new Button("  Add to your story",res.getImage("photo.png"));
+
+        submitStory.addActionListener((e)->{
+            if (changed==0){
+                current.setDescription(description.getText());
+                current.setType(1);
+                if(ServicePosts.getInstance().EditPost(current)){
+                    System.out.println("current:"+current);
+                    newPosts l = new newPosts(res);
+                    l.showBack();
+                }
+            }else{
+                //modifier les deux
+
+                Random rand = new Random();
+                int upperbound = 7483647;
+                int int_random = rand.nextInt(upperbound);
+                String Fullname = "MobileGenerated_"+java.time.LocalDate.now()+"_"+int_random+"."+GlobalExtension;
+                boolean moving = moveFile(GlobalPath,"C:/wamp64/www/Taland/web/uploads/posts/"+Fullname);
+                System.out.println("moved? :"+moving);
+                current.setDescription(description.getText());
+                current.setImage_name(Fullname);
+                current.setType(1);
+
+                if(ServicePosts.getInstance().EditPost(current)){
+                    System.out.println("current:"+current);
+                    newPosts l = new newPosts(res);
+                    l.showBack();
+                }
+
+            }
+        });
+
         Container csub = new Container(BoxLayout.x());
+
         Label archiv = new Label("Archiver");
+        archiv.addPointerPressedListener((e)->{
+            if (changed==0){
+                current.setDescription(description.getText());
+                if(ServicePosts.getInstance().EditPost(current)){
+                    System.out.println("current:"+current);
+                    newPosts l = new newPosts(res);
+                    l.showBack();
+                }
+            }else{
+                //modifier les deux
+
+                Random rand = new Random();
+                int upperbound = 7483647;
+                int int_random = rand.nextInt(upperbound);
+                String Fullname = "MobileGenerated_"+java.time.LocalDate.now()+"_"+int_random+"."+GlobalExtension;
+                boolean moving = moveFile(GlobalPath,"C:/wamp64/www/Taland/web/uploads/posts/"+Fullname);
+                System.out.println("moved? :"+moving);
+                current.setDescription(description.getText());
+                current.setImage_name(Fullname);
+                current.setArchive(1);
+
+                if(ServicePosts.getInstance().EditPost(current)){
+                    System.out.println("current:"+current);
+                    newPosts l = new newPosts(res);
+                    l.showBack();
+                }
+
+            }
+        });
         archiv.getAllStyles().setFgColor(0xC12222);
 
         csub.addAll(submitStory,submitPost,archiv);

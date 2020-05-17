@@ -23,6 +23,7 @@
     <image name="news-tab-down.png" type="multi"  />
     <image name="on-off-off.png" type="multi"  />
     <image name="on-off-on.png" type="multi"  />
+    <image name="photo.png"  />
     <image name="profile-background.jpg"  />
     <image name="profile-pic.jpg" type="multi"  />
     <image name="signin-background.jpg"  />
@@ -337,6 +338,7 @@
         <val key="transparency" value="0" />
     </theme>
     <image name="timeline-background.jpg"  />
+    <image name="trash.png"  />
     <image name="twitter-logo.png" type="multi"  />
     <image name="welcome-background.jpg"  />
     <image name="welcome-slide-1.png" type="multi"  />
