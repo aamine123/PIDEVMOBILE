@@ -77,6 +77,7 @@ public class BaseForm extends Form {
         ));
         
         tb.addMaterialCommandToSideMenu("Newsfeed", FontImage.MATERIAL_UPDATE, e -> new com.codename1.uikit.cleanmodern.NewsfeedForm(res).show());
+        tb.addMaterialCommandToSideMenu("Competitions", FontImage.MATERIAL_UPDATE, e -> new com.codename1.uikit.cleanmodern.Competitions(res).show());
         tb.addMaterialCommandToSideMenu("Profile", FontImage.MATERIAL_SETTINGS, e -> new com.codename1.uikit.cleanmodern.ProfileForm(res).show());
         tb.addMaterialCommandToSideMenu("Logout", FontImage.MATERIAL_EXIT_TO_APP, e -> new WalkthruForm(res).show());
     }
