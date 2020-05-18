@@ -97,7 +97,7 @@ public class AffichageArticle extends Form {
 
         EncodedImage enc = EncodedImage.createFromImage(theme.getImage("load.png"), true);
       //    EncodedImage enc = EncodedImage.createFromImage(theme.getImage("heart.png"), true);
-          Image image = URLImage.createToStorage(enc, vid.getImage_Article(), "http://localhost/TalandWEB/public/uploads/" + vid.getImage_Article());
+          Image image = URLImage.createToStorage(enc, vid.getImage_Article(), "http://localhost/taland/web/uploads/article/" + vid.getImage_Article());
            ImageViewer img = new ImageViewer(image);
           holder.add(img);
 
@@ -119,7 +119,7 @@ public class AffichageArticle extends Form {
 
         Label l1 = new Label("moy");
         ConnectionRequest con = new ConnectionRequest();
-        String Url = "http://localhost/talandWEB/web/app_dev.php/Article/ratemoyenneM/"+vid.getId_Article();
+        String Url = "http://localhost/taland/web/app_dev.php/Article/ratemoyenneM/"+vid.getId_Article();
         con.setUrl(Url);
 
         con.addResponseListener((e) -> {

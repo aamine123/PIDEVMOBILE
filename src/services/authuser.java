@@ -59,7 +59,7 @@ public class authuser {
     }
     //verifi user mawjoud wela yetasef
     public boolean checkLogin(String username, String password) {
-        String url = "http://localhost/talandWEB/web/app_dev.php/User/loginMobile/"  + username + "/" + password;
+        String url = "http://localhost/taland/web/app_dev.php/User/loginMobile/"  + username + "/" + password;
 
         req.setUrl(url);
         req.addResponseListener(new ActionListener<NetworkEvent>()  {
@@ -101,7 +101,7 @@ public class authuser {
     //user eli logina
     public ArrayList<User> getUser(String username, String password) {
 
-        String url = "http://localhost/talandWEB/web/app_dev.php/User/loginMobile/"  + username + "/" + password;
+        String url = "http://localhost/taland/web/app_dev.php/User/loginMobile/"  + username + "/" + password;
 
         req.setUrl(url);
         // req.setPost(false);
@@ -192,7 +192,7 @@ public class authuser {
             }
         };
 //        connectionRequest.setUrl("http://localhost:8081/apijsonpi/web/app_dev.php/api/newuser?username=" + userlog + "&email=" + email + "&password=" + MD5.hash(pass) + "&role=" + rol + "&numtel=" + numtel + "&adresse=" + adresse);
-        connectionRequest.setUrl("http://localhost/TalandWEB/web/app_dev.php/User/newuser?username=" + userlog + "&email=" + email + "&password=" + pass +  "&firstname=" + nom + "&lastname=" + prenom);
+        connectionRequest.setUrl("http://localhost/Taland/web/app_dev.php/User/newuser?username=" + userlog + "&email=" + email + "&password=" + pass +  "&firstname=" + nom + "&lastname=" + prenom);
         NetworkManager.getInstance().addToQueue(connectionRequest);
     }
 

@@ -79,7 +79,7 @@ public class BaseForm extends Form {
         Image img = res.getImage("profile-background.jpg");
         ImageViewer lbimg=new ImageViewer();
         EncodedImage placeholder = EncodedImage.createFromImage(a.getImage("load.png"), true);
-        URLImage uRLImage = URLImage.createToStorage(placeholder, SessionUser.loggedUser.getPicture(), "http://localhost/TalandWEB/web/uploads/forum/"+SessionUser.loggedUser.getPicture());
+        URLImage uRLImage = URLImage.createToStorage(placeholder, SessionUser.loggedUser.getPicture(), "http://localhost/taland/web/uploads/posts/"+SessionUser.loggedUser.getPicture());
         System.out.println(SessionUser.loggedUser.getPicture());
         lbimg.setImage(uRLImage);
 

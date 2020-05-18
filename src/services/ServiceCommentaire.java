@@ -83,7 +83,7 @@ public class ServiceCommentaire {
     }
 
     public ArrayList<Commentaire> getAllcomments( int id ){
-        String url = "http://localhost/talandWEB/web/app_dev.php/Forum/affichicommentaireM/"+id;
+        String url = "http://localhost/taland/web/app_dev.php/Forum/affichicommentaireM/"+id;
         System.out.println(url);
         req.setUrl(url);
         req.setPost(false);

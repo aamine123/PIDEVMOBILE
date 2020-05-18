@@ -24,7 +24,7 @@ import entities.Product;
 import entities.User;
 import javafx.scene.control.Cell;
 import services.ServiceProduct;
-import utils.Email;
+//import utils.Email;
 
 import javax.swing.*;
 import java.io.IOException;
@@ -35,7 +35,7 @@ public class cart extends BaseForm {
     int totaal=0;
     public cart(Resources theme,String msg) {
         this.theme = theme;
-        loggedInUser=new User(10,"eya","lookil","eyaloukil@gmail.com");
+        loggedInUser= new User(10,"eya.loukil","eya.loukil@esprit.tn","eya","loukil","31-12-1998","femme","biography");
         Toolbar tb = new Toolbar(true);
         setToolbar(tb);
         getTitleArea().setUIID("Container");
@@ -103,7 +103,7 @@ public class cart extends BaseForm {
                             }
                         }
                     });
-                    tTable.addAll(new Label(name), new Label(String.valueOf(price)), new Label(u.getName()), btnDelete);
+                    tTable.addAll(new Label(name), new Label(String.valueOf(price)), new Label(u.getFirstname()), btnDelete);
 
 
                 }tTable.addAll(new Label("Total"),new Label(String.valueOf(totaal)),new Label(""),new Label(""));
@@ -145,7 +145,7 @@ public class cart extends BaseForm {
                                 System.out.println(u);
                                 String message="We are Taland team:\n" +
                                         "\n" +
-                                        "Hi "+u.getName()+", we send you this mail to inform you that "+loggedInUser.getName()+"("+loggedInUser.getEmail()+") want to buy your product\n" +
+                                        "Hi "+u.getFirstname()+", we send you this mail to inform you that "+loggedInUser.getLastname()+"("+loggedInUser.getEmail()+") want to buy your product\n" +
                                         ""+pr.getName()+".\n" +
                                         "confirm  \"http://127.0.0.1:8000/Products/getProducts/"+pr.getId()+" Here";
                             //Email email=new Email( "talandpidev@gmail.com",  "Tal123and!",  u.getEmail(),  "Taland team",  message);

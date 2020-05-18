@@ -17,7 +17,7 @@ import com.codename1.ui.plaf.Style;
 import entities.Article;
 import com.codename1.io.FileSystemStorage;
 import entities.SessionUser;
-import rest.file.uploader.tn.FileUploader;
+//import rest.file.uploader.tn.FileUploader;
 import services.ServiceArticle;
 import com.codename1.l10n.SimpleDateFormat;
 import com.codename1.ui.layouts.BoxLayout;
@@ -86,6 +86,7 @@ public class HomeArticle extends Form{
                     cr.setDisposeOnCompletion(dlg);
                     NetworkManager.getInstance().addToQueueAndWait(cr);
                 } catch ( IOException ex) {
+
                 }
             }
 

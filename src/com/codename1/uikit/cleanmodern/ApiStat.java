@@ -46,7 +46,7 @@ public class ApiStat {
         CategorySeries series = new CategorySeries(title);
         Label l1 = new Label();
         ConnectionRequest con = new ConnectionRequest();
-        String Url = "http://localhost/talandWEB/web/app_dev.php/Article/Statmobile";
+        String Url = "http://localhost/taland/web/app_dev.php/Article/Statmobile";
         con.setUrl(Url);
      //   String a=new String(con.getResponseData());
         con.addResponseListener((e) -> {
@@ -70,7 +70,7 @@ public class ApiStat {
 
         Label l2 = new Label();
         ConnectionRequest con2 = new ConnectionRequest();
-        String Url2 = "http://localhost/talandWEB/web/app_dev.php/Article/Statmobile1";
+        String Url2 = "http://localhost/taland/web/app_dev.php/Article/Statmobile1";
         con2.setUrl(Url2);
         //   String a=new String(con.getResponseData());
         con2.addResponseListener((e) -> {
@@ -89,7 +89,7 @@ public class ApiStat {
 
         Label l3 = new Label();
         ConnectionRequest con3 = new ConnectionRequest();
-        String Url3 = "http://localhost/talandWEB/web/app_dev.php/Article/Statmobile2";
+        String Url3 = "http://localhost/taland/web/app_dev.php/Article/Statmobile2";
         con3.setUrl(Url3);
         //   String a=new String(con.getResponseData());
         con3.addResponseListener((e) -> {

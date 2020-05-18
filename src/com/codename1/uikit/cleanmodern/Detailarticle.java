@@ -70,7 +70,7 @@ public class Detailarticle extends Form {
         c.addAll(y,nbvue);
         ImageViewer lbimg=new ImageViewer();
         EncodedImage placeholder = EncodedImage.createFromImage(theme.getImage("load.png"), true);
-        URLImage uRLImage = URLImage.createToStorage(placeholder, ar.getImage_Article(), "http://localhost/TalandWEB/public/uploads/"+ar.getImage_Article());
+        URLImage uRLImage = URLImage.createToStorage(placeholder, ar.getImage_Article(), "http://localhost/taland/web/uploads/article/"+ar.getImage_Article());
         lbimg.setImage(uRLImage);
         image.add(lbimg);
         other.addAll(a,b,c);
@@ -112,7 +112,7 @@ public class Detailarticle extends Form {
         public void actionPerformed(ActionEvent evt) {
            // ToastBar.showMessage("j'aime effectué ...", FontImage.MATERIAL_FAVORITE);
             ConnectionRequest req = new ConnectionRequest();
-            Display.getInstance().execute("http://localhost/talandWEB/web/app_dev.php/Article/imprimerM/"+ ar.getId_Article());
+            Display.getInstance().execute("http://localhost/taland/web/app_dev.php/Article/imprimerM/"+ ar.getId_Article());
         }
     });
 

@@ -23,7 +23,7 @@ public class ServiceProduct {
     private User user;
     public ServiceProduct(){
         req=new ConnectionRequest();
-        loggedInUser=new User(10,"eya","lookil","eya");
+        loggedInUser= new User(10,"eya.loukil","eya.loukil@esprit.tn","eya","loukil","31-12-1998","femme","biography");
 
     }
 
@@ -113,9 +113,9 @@ public class ServiceProduct {
                 float id=Float.parseFloat(productsListJson.get("id").toString());
 
                 user.setId((int) id);
-                user.setName(productsListJson.get("firstname").toString());
+                user.setFirstname(productsListJson.get("firstname").toString());
 
-                user.setLastName(productsListJson.get("lastname").toString());
+                user.setLastname(productsListJson.get("lastname").toString());
                 user.setEmail(productsListJson.get("email").toString());
 
         }catch (Exception e){

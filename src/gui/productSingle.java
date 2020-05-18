@@ -53,7 +53,7 @@ public class productSingle extends BaseForm {
 
         add(LayeredLayout.encloseIn(sl, BorderLayout.south(GridLayout.encloseIn(3))));
         setLayout(BoxLayout.y());
-        String urll = "http://localhost/talandWEB/web/uploads/Products/" + p.getImgSrc();
+        String urll = "http://localhost/taland/web/uploads/Products/" + p.getImgSrc();
         String urlQR = "https://chart.googleapis.com/chart?cht=qr&chl=" + stringQr + "&choe=UTF-8&chs=500x500";
         EncodedImage enc = EncodedImage.createFromImage(theme.getImage("news-item-1.jpg").scaled(500, 500), false);
         URLImage urlimg = URLImage.createToStorage(enc, p.getName(), urll);
@@ -61,8 +61,8 @@ public class productSingle extends BaseForm {
         Image im = image.getImage();
         add(image);
         User u = ServiceProduct.getInstance().getProductUserDetails(p);
-        String userNameS = u.getName();
-        String userLastName=u.getLastName();
+        String userNameS = u.getFirstname();
+        String userLastName=u.getLastname();
         Label lUserName = new Label("Product of "+userNameS+" "+userLastName.toUpperCase() );
         Label pPrice=new Label("Price: "+p.getPrice()+" DT");
         lUserName.getUnselectedStyle().setFont(mediumItalicSystemFont);

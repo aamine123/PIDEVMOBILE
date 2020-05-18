@@ -145,7 +145,7 @@ public class ServiceSujet {
         return Sujets;
     }
     public void modifiersujet(int id,String desc) {
-        String url = "http://localhost/talandWEB/web/app_dev.php/Forum/updatesujetM/"+id+"/"+desc;
+        String url = "http://localhost/taland/web/app_dev.php/Forum/updatesujetM/"+id+"/"+desc;
         req.setUrl(url);
         req.setPost(false);
 
@@ -160,7 +160,7 @@ public class ServiceSujet {
 
     }
     public void like(int id) {
-        String url = "http://localhost/talandWEB/web/app_dev.php/Forum/likem/"+id;
+        String url = "http://localhost/taland/web/app_dev.php/Forum/likem/"+id;
         req.setUrl(url);
         req.setPost(false);
 
@@ -176,7 +176,7 @@ public class ServiceSujet {
     }
     public void supprimersujet(int id) {
         //String url = Statics.BASE_URL + "Forum/" +"updatesujetM/"+id+"?"+ desc ; //création de l'URL
-        String url = "http://localhost/talandWEB/web/app_dev.php/Forum/supprimersujetM/"+id;
+        String url = "http://localhost/taland/web/app_dev.php/Forum/supprimersujetM/"+id;
         req.setUrl(url);
         req.setPost(false);
 
@@ -192,7 +192,7 @@ public class ServiceSujet {
         }
 
     public boolean addsujet(int idu,  String desc){
-        String url = "http://localhost/talandWEB/web/app_dev.php/Forum/ajoutersujetM/"+idu+"/"+desc;
+        String url = "http://localhost/taland/web/app_dev.php/Forum/ajoutersujetM/"+idu+"/"+desc;
         req.setUrl(url);
         req.setPost(false);
         req.addResponseListener(new ActionListener<NetworkEvent>() {

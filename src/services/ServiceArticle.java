@@ -33,7 +33,7 @@ public class ServiceArticle {
         SimpleDateFormat tempss = new SimpleDateFormat("yyyy-MM-dd");
         // String datedeb = tempss.format(ev.getDATED_EVENT());
 
-        String Url = "http://localhost/talandWEB/web/app_dev.php/Article/newM"
+        String Url = "http://localhost/taland/web/app_dev.php/Article/newM"
                 +"?Nom_Article=" + ar.getNom_Article()
 
                 + "&Contenu_Article=" + ar.getContenu_Article()+
@@ -120,7 +120,7 @@ public class ServiceArticle {
     ArrayList<Article> listTasks = new ArrayList<>();
     public ArrayList<Article> getList2(){
         ConnectionRequest con = new ConnectionRequest();
-        con.setUrl("http://localhost/talandWEB/web/app_dev.php/Article/allArticle");
+        con.setUrl("http://localhost/taland/web/app_dev.php/Article/allArticle");
         con.addResponseListener(new ActionListener<NetworkEvent>() {
             @Override
             public void actionPerformed(NetworkEvent evt) {
@@ -136,7 +136,7 @@ public class ServiceArticle {
 
     public void modifierArticle(Article ta,Resources res) {
         ConnectionRequest con = new ConnectionRequest();
-        String Url = "http://localhost/talandWEB/web/app_dev.php/Article/updateArticle/"+ ta.getId_Article()+"?titre=" + ta.getNom_Article()
+        String Url = "http://localhost/taland/web/app_dev.php/Article/updateArticle/"+ ta.getId_Article()+"?titre=" + ta.getNom_Article()
                 + "&contenuArticle=" + ta.getContenu_Article()
                 + "&imageArticle=" + ta.getImage_Article()
                 + "&titreEvent="+  ta.getTitre_Event();
@@ -156,7 +156,7 @@ public class ServiceArticle {
 
     public void nbvue(Article ta,Resources res) {
         ConnectionRequest con = new ConnectionRequest();
-        String Url = "http://localhost/talandWEB/web/app_dev.php/Article/nbvue/"+ ta.getId_Article();
+        String Url = "http://localhost/taland/web/app_dev.php/Article/nbvue/"+ ta.getId_Article();
         con.setUrl(Url);
 
         con.addResponseListener((e) -> {
@@ -171,7 +171,7 @@ public class ServiceArticle {
 
     public void findarticle(Article ta,Resources res) {
         ConnectionRequest con = new ConnectionRequest();
-        String Url = "http://localhost/talandWEB/web/app_dev.php/Article/findarticle/"+ ta.getNom_Article();
+        String Url = "http://localhost/taland/web/app_dev.php/Article/findarticle/"+ ta.getNom_Article();
         con.setUrl(Url);
 
         con.addResponseListener((e) -> {
@@ -186,7 +186,7 @@ public class ServiceArticle {
 
     public void imprimer(Article ta,Resources res) {
         ConnectionRequest con = new ConnectionRequest();
-        String Url = "http://localhost/talandWEB/web/app_dev.php/Article/imprimerM/"+ ta.getId_Article();
+        String Url = "http://localhost/taland/web/app_dev.php/Article/imprimerM/"+ ta.getId_Article();
         con.setUrl(Url);
 
         con.addResponseListener((e) -> {
@@ -201,7 +201,7 @@ public class ServiceArticle {
 
     public void supprimerarticle(Article ta,Resources res) {
         ConnectionRequest con = new ConnectionRequest();
-        String Url = "http://localhost/talandWEB/web/app_dev.php/Article/supparticle/"+ ta.getId_Article();
+        String Url = "http://localhost/taland/web/app_dev.php/Article/supparticle/"+ ta.getId_Article();
         con.setUrl(Url);
 
         con.addResponseListener((e) -> {
@@ -216,7 +216,7 @@ public class ServiceArticle {
 
     public String stat() {
         ConnectionRequest con = new ConnectionRequest();
-        String Url = "http://localhost/talandWEB/web/app_dev.php/Article/Statmobile";
+        String Url = "http://localhost/taland/web/app_dev.php/Article/Statmobile";
         con.setUrl(Url);
         String a=new String(con.getResponseData());
         con.addResponseListener((e) -> {
@@ -234,7 +234,7 @@ public class ServiceArticle {
     public ArrayList<Article> Chercher(String desc) {
         ArrayList<Article> listArt = new ArrayList<>();
         ConnectionRequest con = new ConnectionRequest();
-        con.setUrl("http://localhost/talandWEB/web/app_dev.php/Article/findArticle/" + desc);
+        con.setUrl("http://localhost/taland/web/app_dev.php/Article/findArticle/" + desc);
         con.addResponseListener((NetworkEvent evt) -> {
             JSONParser jsonp = new JSONParser();
             try {

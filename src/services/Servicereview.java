@@ -86,7 +86,7 @@ public class Servicereview {
     }
 
     public void rate(int rate,int idu,Article ar) {
-        String url = "http://localhost/talandWEB/web/app_dev.php/Article/rateM/"+rate+"/"+idu+"/"+ar.getId_Article();
+        String url = "http://localhost/taland/web/app_dev.php/Article/rateM/"+rate+"/"+idu+"/"+ar.getId_Article();
         req.setUrl(url);
         req.setPost(false);
 
@@ -101,7 +101,7 @@ public class Servicereview {
 
     }
     public void moyrate(Article ar) {
-        String url = "http://localhost/talandWEB/web/app_dev.php/Article/ratemoyenneM/"+ar.getId_Article();
+        String url = "http://localhost/taland/web/app_dev.php/Article/ratemoyenneM/"+ar.getId_Article();
         req.setUrl(url);
         req.setPost(false);
 
