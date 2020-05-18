@@ -1,6 +1,7 @@
 package entities;
 
 import java.util.Date;
+import java.util.Objects;
 
 public class Sujet {
     private int id_f,id_user,Etat,nbre_jaime,strike;
@@ -9,16 +10,17 @@ public class Sujet {
 
     public Sujet() {
     }
-
-    public Sujet(int id_f, int id_user, int Etat, int nbre_jaime, int strike, String description_f, Date date) {
-        this.id_f = id_f;
+    public Sujet( int id_user, int Etat, int nbre_jaime, int strike, String description_f, Date date){
         this.id_user = id_user;
         this.Etat = Etat;
         this.nbre_jaime = nbre_jaime;
         this.strike = strike;
         this.description_f = description_f;
         this.date = date;
+
     }
+
+
 
     public int getId_f() {
         return id_f;
@@ -94,5 +96,6 @@ public class Sujet {
                 description_f.equals(sujet.description_f) &&
                 date.equals(sujet.date);
     }
+
 
 }

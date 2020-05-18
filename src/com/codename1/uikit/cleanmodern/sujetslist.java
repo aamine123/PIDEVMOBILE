@@ -134,15 +134,18 @@ public class sujetslist extends BaseForm {
         /********afficher les sujets**********/
         ser = new ServiceSujet();
         Sujets = new ArrayList<>();
-        Sujets = ser.getAllTasks();
+        Sujets = ser.top5sujetM();
         listsujetscont = new Container();
         for (int i = 0; i < Sujets.size(); i++) {
-            listsujetscont.add(addItem(ser.getAllTasks().get(i)));
+         //  listsujetscont.add(addItem(ser.getAllTasks().get(i)));
+            addButton(res.getImage("news-item-1.jpg"),ser.top5sujetM().get(i).getDescription_f(), false, ser.top5sujetM().get(i).getNbre_jaime(), 0);
+         //   System.out.println("lematha"+s.get(i).getId_f());
+
         }
         add(listsujetscont);
         /********end afficher les sujets**********/
 
-    }
+          }
 
     private void updateArrowPosition(Button b, Label arrow) {
         arrow.getUnselectedStyle().setMargin(LEFT, b.getX() + b.getWidth() / 2 - arrow.getWidth() / 2);

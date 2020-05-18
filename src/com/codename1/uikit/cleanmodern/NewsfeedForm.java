@@ -23,9 +23,13 @@ import com.codename1.components.ScaleImageLabel;
 import com.codename1.components.SpanLabel;
 import com.codename1.components.ToastBar;
 import com.codename1.ui.*;
+import com.codename1.ui.events.ActionEvent;
+import com.codename1.ui.events.ActionListener;
 import com.codename1.ui.layouts.*;
 import com.codename1.ui.plaf.Style;
 import com.codename1.ui.util.Resources;
+import entities.SessionUser;
+import utils.Statics;
 
 /**
  * The newsfeed form
@@ -33,9 +37,12 @@ import com.codename1.ui.util.Resources;
  * @author Shai Almog
  */
 public class NewsfeedForm extends BaseForm {
+    private Resources theme;
 
     public NewsfeedForm(Resources res) {
+
         super("Newsfeed", BoxLayout.y());
+        System.out.println("ID est :"+ SessionUser.loggedUser.getId());
         Toolbar tb = new Toolbar(true);
         setToolbar(tb);
         getTitleArea().setUIID("Container");
@@ -43,6 +50,7 @@ public class NewsfeedForm extends BaseForm {
         getContentPane().setScrollVisible(false);
         
         super.addSideMenu(res);
+
         tb.addSearchCommand(e -> {});
         
         Tabs swipe = new Tabs();
@@ -51,7 +59,7 @@ public class NewsfeedForm extends BaseForm {
         Label spacer2 = new Label();
         addTab(swipe, res.getImage("news-item.jpg"), spacer1, "15 Likes  ", "85 Comments", "Integer ut placerat purued non dignissim neque. ");
         addTab(swipe, res.getImage("dog.jpg"), spacer2, "100 Likes  ", "66 Comments", "Dogs are cute: story at 11");
-                
+
         swipe.setUIID("Container");
         swipe.getContentPane().setUIID("Container");
         swipe.hideTabs();
@@ -93,19 +101,21 @@ public class NewsfeedForm extends BaseForm {
         ButtonGroup barGroup = new ButtonGroup();
         RadioButton all = RadioButton.createToggle("All", barGroup);
         all.setUIID("SelectBar");
-        RadioButton featured = RadioButton.createToggle("Featured", barGroup);
-        featured.setUIID("SelectBar");
-        RadioButton popular = RadioButton.createToggle("Popular", barGroup);
-        popular.setUIID("SelectBar");
-        RadioButton myFavorite = RadioButton.createToggle("My Favorites", barGroup);
-        myFavorite.setUIID("SelectBar");
+        RadioButton Forum = RadioButton.createToggle("Forum", barGroup);
+        Forum.setUIID("SelectBar");
+       // RadioButton featured = RadioButton.createToggle("Featured", barGroup);
+        //featured.setUIID("SelectBar");
+        //RadioButton popular = RadioButton.createToggle("Popular", barGroup);
+        //popular.setUIID("SelectBar");
+        //RadioButton myFavorite = RadioButton.createToggle("My Favorites", barGroup);
+        //myFavorite.setUIID("SelectBar");
         Label arrow = new Label(res.getImage("news-tab-down-arrow.png"), "Container");
         
         add(LayeredLayout.encloseIn(
-                GridLayout.encloseIn(4, all, featured, popular, myFavorite),
+                GridLayout.encloseIn(4, all, Forum),
                 FlowLayout.encloseBottom(arrow)
         ));
-        
+
         all.setSelected(true);
         arrow.setVisible(false);
         addShowListener(e -> {
@@ -113,10 +123,16 @@ public class NewsfeedForm extends BaseForm {
             updateArrowPosition(all, arrow);
         });
         bindButtonSelection(all, arrow);
-        bindButtonSelection(featured, arrow);
-        bindButtonSelection(popular, arrow);
-        bindButtonSelection(myFavorite, arrow);
-        
+        bindButtonSelection(Forum, arrow);
+        //bindButtonSelection(featured, arrow);
+        //bindButtonSelection(popular, arrow);
+        //bindButtonSelection(myFavorite, arrow);
+        Forum.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent evt) {
+                new sujetslist(res).show();
+            }
+        });
         // special case for rotation
         addOrientationListener(e -> {
             updateArrowPosition(barGroup.getRadioButton(barGroup.getSelectedIndex()), arrow);

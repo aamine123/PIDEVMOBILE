@@ -3,6 +3,7 @@
     <CLASSES>
       <root url="file://$PROJECT_DIR$/lib/impl/cls" />
       <root url="jar://$PROJECT_DIR$/lib/CodenameOne.jar!/" />
+      <root url="jar://$USER_HOME$/Desktop/jar/CodeNameOneFileUploader.jar!/" />
     </CLASSES>
     <JAVADOC />
     <SOURCES>

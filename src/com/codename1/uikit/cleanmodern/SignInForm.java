@@ -20,22 +20,34 @@
 package com.codename1.uikit.cleanmodern;
 
 import com.codename1.components.FloatingHint;
+import com.codename1.components.ToastBar;
 import com.codename1.ui.*;
+import com.codename1.ui.events.ActionEvent;
+import com.codename1.ui.events.ActionListener;
 import com.codename1.ui.layouts.BorderLayout;
 import com.codename1.ui.layouts.BoxLayout;
 import com.codename1.ui.layouts.FlowLayout;
 import com.codename1.ui.util.Resources;
+import com.codename1.ui.validation.Constraint;
+import com.codename1.ui.validation.LengthConstraint;
+import com.codename1.ui.validation.RegexConstraint;
+import com.codename1.ui.validation.Validator;
+import entities.SessionUser;
+import entities.User;
+import services.authuser;
+import utils.Statics;
 
-/**
- * Sign in UI
- *
- * @author Shai Almog
- */
+
 public class SignInForm extends BaseForm {
 
+  //controle
+    boolean result=false;
+    static User connectedUser=new User();
+    authuser auth = new authuser();
+    public static TextField username,password;
+    public static Resources res;
     public SignInForm(Resources res) {
         super(new BorderLayout());
-        
         if(!Display.getInstance().isTablet()) {
             BorderLayout bl = (BorderLayout)getLayout();
             bl.defineLandscapeSwap(BorderLayout.NORTH, BorderLayout.EAST);
@@ -43,19 +55,36 @@ public class SignInForm extends BaseForm {
         }
         getTitleArea().setUIID("Container");
         setUIID("SignIn");
-        
-        add(BorderLayout.NORTH, new Label(res.getImage("Logo.png"), "LogoLabel"));
-        
+
+
+
         TextField username = new TextField("", "Username", 20, TextField.ANY);
         TextField password = new TextField("", "Password", 20, TextField.PASSWORD);
         username.setSingleLineTextArea(false);
         password.setSingleLineTextArea(false);
+
+       // username.getUnselectedStyle().setFgColor(621200);
+        //password.getUnselectedStyle().setFgColor(251340);
         Button signIn = new Button("Sign In");
         Button signUp = new Button("Sign Up");
+
+
+        //signIn.getUnselectedStyle().setFgColor(100000);
+        //signUp.getUnselectedStyle().setFgColor(654111);
+
+
+
+
         signUp.addActionListener(e -> new SignUpForm(res).show());
         signUp.setUIID("Link");
         Label doneHaveAnAccount = new Label("Don't have an account?");
-        
+        doneHaveAnAccount.getUnselectedStyle().setFgColor(0xff0000);
+        Validator val = new Validator();
+
+
+        val.addConstraint(password, new LengthConstraint(4));
+        val.addConstraint(username, RegexConstraint.validEmail());
+
         Container content = BoxLayout.encloseY(
                 new FloatingHint(username),
                 createLineSeparator(),
@@ -67,7 +96,87 @@ public class SignInForm extends BaseForm {
         content.setScrollableY(true);
         add(BorderLayout.SOUTH, content);
         signIn.requestFocus();
-        signIn.addActionListener(e -> new NewsfeedForm(res).show());
+        //e -> new NewsfeedForm(res).show()
+        signIn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent evt) {
+                authuser auth = authuser.getInstance();
+
+                if (!checkCredentials(username, password)) {
+                    if (auth.checkLogin(username.getText(), password.getText())) {
+                        User currentLoggedUser = auth.getUser(username.getText(), password.getText()).get(0);
+                        SessionUser.loggedUser = currentLoggedUser;
+                        new NewsfeedForm(res).show();
+
+                    }
+
+                    else {
+
+                        ToastBar.showMessage("verifier les champs ", FontImage.MATERIAL_INFO);
+
+                    }
+                }
+
+            }
+        });
     }
-    
+
+    public boolean checkCredentials(TextField username,TextField password){
+
+        Validator validator = new Validator();
+        validator.setShowErrorMessageForFocusedComponent(true);
+        validator.addConstraint(username, new Constraint() {
+            @Override
+            public boolean isValid(Object value) {
+                //  boolean res = false;
+                if (value.equals("")) {
+                    username.setUIID("Invalid Username");
+
+                    result = true;
+
+
+                }else{
+                    result = false;
+                }
+                return result;
+            }
+
+            @Override
+            public String getDefaultFailMessage() {
+                return "Please Enter a valid username";
+            }
+
+        });
+
+
+        validator.addConstraint(password, new Constraint() {
+            @Override
+            public boolean isValid(Object value) {
+                // boolean res = false;
+                if (value.equals("")) {
+                    password.setUIID("Invalid Password");
+                    System.out.println("invalid Password");
+                //    Dialog.show("Erreur", "Champs password Obligatoire", "Ok", null);
+
+                    result = true;
+                }else{
+                    result = false;
+                }
+                return result;
+            }
+
+            @Override
+            public String getDefaultFailMessage() {
+                return "Please Enter a valid password";
+            }
+
+        });
+        System.out.println(res);
+        return result;
+    }
+
+
 }
+
+
+
