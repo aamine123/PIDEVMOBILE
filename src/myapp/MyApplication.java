@@ -51,7 +51,7 @@ public class MyApplication {
     }
     
     public void start() {
-        new allProducts(theme).show();
+        new SignInForm(theme).show();
     }
 
     public void stop() {

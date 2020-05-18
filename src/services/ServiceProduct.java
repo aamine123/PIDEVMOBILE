@@ -36,6 +36,7 @@ public class ServiceProduct {
     public boolean addProduct(Product p,String categoryName){
         String url= Statics.BASE_URL+"Products/addProductMobile/"+p.getName()+"/"+p.getPrice()+"/"+
                 loggedInUser.getId()+"/"+categoryName;
+        System.out.println(url);
         req.setUrl(url);
         req.addResponseListener(new ActionListener<NetworkEvent>() {
             @Override
@@ -49,6 +50,7 @@ public class ServiceProduct {
     }
 
     public ArrayList<Product> parseProducts(String jsonText){
+
         products=new ArrayList<>();
         JSONParser j=new JSONParser();
         try {
@@ -83,6 +85,7 @@ public class ServiceProduct {
 
     public ArrayList<Product> allProducts(){
         String url = Statics.BASE_URL+"Products/allProductsMobile";
+        System.out.println("get all"+url);
         req.setUrl(url);
         req.setPost(false);
         req.addResponseListener(new ActionListener<NetworkEvent>() {

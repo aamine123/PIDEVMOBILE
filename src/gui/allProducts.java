@@ -54,7 +54,7 @@ public class allProducts extends BaseForm {
 
         for (Product p : ServiceProduct.getInstance().allProducts()) {
             //String urll = "http://127.0.0.1/aa.jpg";
-            String urll = "http://localhost/talandWEB/web/uploads/Products/" + p.getImgSrc();
+            String urll = "http://localhost/taland/web/uploads/Products/" + p.getImgSrc();
             EncodedImage enc = EncodedImage.createFromImage(theme.getImage("news-item-1.jpg").scaled(250, 250), false);
             URLImage urlimg = URLImage.createToStorage(enc, p.getName(), urll);
             ImageViewer image = new ImageViewer(urlimg);
