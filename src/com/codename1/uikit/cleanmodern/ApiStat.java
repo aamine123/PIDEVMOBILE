@@ -67,7 +67,6 @@ public class ApiStat {
 
         double v1 = (double) Float.parseFloat(l1.getText());
 
-
         Label l2 = new Label();
         ConnectionRequest con2 = new ConnectionRequest();
         String Url2 = "http://localhost/taland/web/app_dev.php/Article/Statmobile1";
@@ -117,6 +116,8 @@ public class ApiStat {
         // Generate the values
         double[] values = new double[]{50, 99, 11, 30, 25, 60};
 
+
+
         // Set up the renderer
         int[] colors = new int[]{ColorUtil.BLUE, ColorUtil.MAGENTA, ColorUtil.CYAN};
         DefaultRenderer renderer = buildCategoryRenderer(colors);
@@ -140,6 +141,13 @@ public class ApiStat {
 
         // Create a form and show it.
         Form f = new Form("Statistique");
+        Toolbar tb = new Toolbar(true);
+        f.setToolbar(tb);
+
+        f.getToolbar().addMaterialCommandToLeftBar("Back", FontImage.MATERIAL_ARROW_BACK, (e) -> {
+            HomeArticle l = new HomeArticle(theme);
+            l.show();
+        });
         f.setLayout(new BorderLayout());
         f.addComponent(BorderLayout.CENTER, c);
 

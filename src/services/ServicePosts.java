@@ -12,6 +12,7 @@ import java.util.*;
 
 public class ServicePosts {
     public ArrayList<Posts> Posts;
+    public ArrayList<User> users = new ArrayList<>();
     public static ServicePosts instance=null;
     public boolean resultOK;
     private ConnectionRequest req;
@@ -129,6 +130,7 @@ public class ServicePosts {
         NetworkManager.getInstance().addToQueueAndWait(req);
         return resultOK;
     }
+
 
 
 

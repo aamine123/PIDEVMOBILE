@@ -119,7 +119,7 @@ public class Detailarticle extends Form {
         Container Buttons=new Container(new FlowLayout(CENTER,CENTER));
         Button modifier =new Button ("Modifier");
         Button supprimer =new Button ("Supprimer");
-        Buttons.addAll(imprimer,modifier,supprimer,share);
+        Buttons.addAll(imprimer,modifier,supprimer);
         addAll(Buttons);
         modifier.addActionListener(new ActionListener() {
             @Override

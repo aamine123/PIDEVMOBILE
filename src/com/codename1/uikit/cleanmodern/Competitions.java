@@ -143,9 +143,9 @@ public class Competitions extends BaseForm {
         add(add);
         for (int i = 0; i < competitions.size(); i++) {
             String urlimage = "http://localhost/taland/web/uploads/events/"+competitions.get(i).getImage_name();
-
             EncodedImage enc3 = EncodedImage.createFromImage(res.getImage("dog.jpg"), false);
-            Image image = URLImage.createToStorage(enc3,"events"+competitions.get(i).getIdcomp()+".png", urlimage);
+            Image image = URLImage.createToStorage(enc3,"events"+competitions.get(i).getImage_name()+".png", urlimage);
+
         addButton(res,competitions.get(i),image,competitions.get(i).getNamecomp(),false, competitions.get(i).getNbrmaxpar()-competitions.get(i).getNbrparticipant(), competitions.get(i).getNbrmaxspec()-competitions.get(i).getNbrspec());
     }
 

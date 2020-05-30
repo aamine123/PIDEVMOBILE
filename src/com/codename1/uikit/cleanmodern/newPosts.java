@@ -24,16 +24,22 @@ import com.codename1.components.ScaleImageLabel;
 import com.codename1.components.SpanLabel;
 import com.codename1.components.ToastBar;
 import com.codename1.ui.*;
+import com.codename1.ui.events.ActionEvent;
+import com.codename1.ui.events.ActionListener;
 import com.codename1.ui.geom.Dimension;
 import com.codename1.ui.layouts.*;
 import com.codename1.ui.plaf.Style;
 import com.codename1.ui.util.Resources;
 import entities.Posts;
+import entities.SessionUser;
+import entities.User;
 import services.ServiceLikes;
 import services.ServicePosts;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * The newsfeed form
@@ -65,8 +71,7 @@ public class newPosts extends BaseForm {
                 System.out.println("no text");
                 searchusers.removeAll();
             }else{
-                searchusers.add( new Label("youssef marzouk"));
-                System.out.println(text);
+                searchusers.removeAll();
             }
         });
         add(searchusers);
@@ -138,6 +143,8 @@ public class newPosts extends BaseForm {
 
 
 
+
+
         for (int i = 0; i < posts.size(); i++) {
             Posts current = posts.get(i);
 
@@ -149,11 +156,41 @@ public class newPosts extends BaseForm {
 
                     EncodedImage enc3 = EncodedImage.createFromImage(res.getImage("dog.jpg"), false);
                     Image image = URLImage.createToStorage(enc3,"stock"+posts.get(i).getImage_name()+".png", urlimage);
-                    Label navigate = new Label("navigate");
+                    Label navigate = new Label("...");
                     navigate.getAllStyles().setFgColor(0xC12222);
                     EditPost ep = new EditPost(res,current);
-                    navigate.addPointerPressedListener((ev)-> {
+                    ModifyPost mp = new ModifyPost(res,current);
+                    /*navigate.addPointerPressedListener((ev)-> {
                         ep.show();
+                    });*/
+                    navigate.addPointerPressedListener((ev)-> {
+                        Dialog d = new Dialog(current.getIdU().get("firstname")+" "+current.getIdU().get("lastname")+"'s post");
+                        Label supp = new Label("Delete");
+                        supp.getAllStyles().setFgColor(0xC12222);
+                        Label edits = new Label("Edit");
+                        Label open = new Label("Details");
+                        edits.getAllStyles().setFgColor(0x000000);
+                        open.getAllStyles().setFgColor(0x000000);
+
+                        open.addPointerPressedListener((r)->{
+                            ep.show();
+                        });
+                        edits.addPointerPressedListener((r)->{
+                            mp.show();
+                        });
+                        d.setLayout(BoxLayout.y());
+                        float cidu = Float.parseFloat(current.getIdU().get("id").toString());
+                        int postidu = ((int)cidu);
+                        if (SessionUser.loggedUser.getId()==postidu){
+                            d.add(supp);
+                            d.add(edits);
+                        }
+
+                        d.add(open);
+
+
+
+                        d.showPopupDialog(navigate);
                     });
                     Container single = addButton(posts.get(i),image,posts.get(i).getIdU(),posts.get(i).getDescription(), false, posts.get(i).getNbrlikes(), posts.get(i).getNbrcomments(),navigate);
                     Cpost.add(single);
@@ -346,9 +383,8 @@ public class newPosts extends BaseForm {
 
         cua.add(BorderLayout.WEST,ua);
 
-        if ((double)(user.get("id"))==15){
             cua.add(BorderLayout.EAST,navigate);
-        }
+
 
         Label spacer1 = new Label("aa");
         spacer1.getAllStyles().setFgColor(0xFFFFFF);

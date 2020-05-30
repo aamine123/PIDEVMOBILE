@@ -192,7 +192,7 @@ public class authuser {
             }
         };
 //        connectionRequest.setUrl("http://localhost:8081/apijsonpi/web/app_dev.php/api/newuser?username=" + userlog + "&email=" + email + "&password=" + MD5.hash(pass) + "&role=" + rol + "&numtel=" + numtel + "&adresse=" + adresse);
-        connectionRequest.setUrl("http://localhost/Taland/web/app_dev.php/User/newuser?username=" + userlog + "&email=" + email + "&password=" + pass +  "&firstname=" + nom + "&lastname=" + prenom);
+        connectionRequest.setUrl("http://localhost/taland/web/app_dev.php/User/newuser?username=" + userlog + "&email=" + email + "&password=" + pass +  "&firstname=" + nom + "&lastname=" + prenom);
         NetworkManager.getInstance().addToQueue(connectionRequest);
     }
 

@@ -130,8 +130,7 @@ public class SignUpForm extends BaseForm {
             @Override
             public void actionPerformed(ActionEvent evt) {
                 //auth.RegisterUser(res);
-                new NewsfeedForm(res).show();
-
+                new SignInForm(res).show();
             }
         });
     }

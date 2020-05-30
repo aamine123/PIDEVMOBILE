@@ -3,6 +3,7 @@ package services;
 import com.codename1.io.*;
 import com.codename1.ui.events.ActionListener;
 import entities.Product;
+import entities.SessionUser;
 import entities.User;
 import jdk.nashorn.internal.runtime.JSONListAdapter;
 import utils.Statics;
@@ -23,8 +24,7 @@ public class ServiceProduct {
     private User user;
     public ServiceProduct(){
         req=new ConnectionRequest();
-        loggedInUser= new User(10,"eya.loukil","eya.loukil@esprit.tn","eya","loukil","31-12-1998","femme","biography");
-
+        loggedInUser= SessionUser.loggedUser;
     }
 
     public static ServiceProduct getInstance(){
