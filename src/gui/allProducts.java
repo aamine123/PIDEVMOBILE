@@ -7,6 +7,7 @@ import com.codename1.db.Row;
 import com.codename1.ui.*;
 import com.codename1.ui.events.ActionEvent;
 import com.codename1.ui.events.ActionListener;
+import com.codename1.ui.geom.Dimension;
 import com.codename1.ui.layouts.*;
 import com.codename1.ui.plaf.Style;
 import com.codename1.ui.util.Resources;
@@ -135,34 +136,31 @@ public class allProducts extends BaseForm {
     }
 
     private void addButton(Image img, String title, boolean liked, int likeCount, int commentCount, Product p) {
+        Font largePlainMonospaceFont = Font.createSystemFont(Font.FACE_MONOSPACE, Font.STYLE_PLAIN, Font.SIZE_LARGE);
+        Font mediumPlainMonospaceFont = Font.createSystemFont(Font.FACE_MONOSPACE, Font.STYLE_PLAIN, Font.SIZE_SMALL);
         int height = Display.getInstance().convertToPixels(11.5f);
         int width = Display.getInstance().convertToPixels(14f);
         Button image = new Button(img.fill(width, height));
         image.setUIID("Label");
         Container cnt = BorderLayout.west(image);
         cnt.setLeadComponent(image);
-        TextArea ta = new TextArea(title);
-        ta.setUIID("NewsTopLine");
-        ta.setEditable(false);
+        Label ta = new Label(title, "NewsBottomLine");
+        ta.getUnselectedStyle().setFont(largePlainMonospaceFont);
+       // ta.setUIID("NewsTopLine");
+       // ta.setEditable(false);
 
-        Label likes = new Label(likeCount + " Likes  ", "NewsBottomLine");
+        Label likes = new Label("price: "+p.getPrice() + " DT  ");
+        likes.getUnselectedStyle().setFont(mediumPlainMonospaceFont);
         likes.setTextPosition(RIGHT);
-        if (!liked) {
-            FontImage.setMaterialIcon(likes, FontImage.MATERIAL_FAVORITE);
-        } else {
-            Style s = new Style(likes.getUnselectedStyle());
-            s.setFgColor(0xff2d55);
-            FontImage heartImage = FontImage.createMaterial(FontImage.MATERIAL_FAVORITE, s);
-            likes.setIcon(heartImage);
-        }
+
         Label comments = new Label(commentCount + " Comments", "NewsBottomLine");
-        FontImage.setMaterialIcon(likes, FontImage.MATERIAL_CHAT);
+
 
 
         cnt.add(BorderLayout.CENTER,
                 BoxLayout.encloseY(
                         ta,
-                        BoxLayout.encloseX(likes, comments)
+                        BoxLayout.encloseX(likes)
                 ));
 
 
