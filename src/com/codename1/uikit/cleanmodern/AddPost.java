@@ -182,7 +182,7 @@ public class AddPost extends BaseForm {
             String Fullname = "MobileGenerated_"+java.time.LocalDate.now()+"_"+subname+"_"+int_random+"."+GlobalExtension;
             System.out.println(Fullname);
 
-            boolean moving = moveFile(GlobalPath,"C:/wamp64/www/Taland/web/uploads/posts/"+Fullname);
+            boolean moving = moveFile(GlobalPath,"C:/wamp64/www/TalandWEB/web/uploads/posts/"+Fullname);
             System.out.println("moved? :"+moving);
 
             entities.Posts p = new entities.Posts();

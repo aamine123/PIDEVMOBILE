@@ -149,7 +149,7 @@ public class Posts extends BaseForm {
 
 
         for (int i = 0; i < posts.size(); i++) {
-            String urlimage = "http://localhost/taland/web/uploads/posts/"+posts.get(i).getImage_name();
+            String urlimage = "http://localhost/TalandWEB/web/uploads/posts/"+posts.get(i).getImage_name();
             String extension =posts.get(i).getImage_name().charAt(posts.get(i).getImage_name().length()-3)+""+posts.get(i).getImage_name().charAt(posts.get(i).getImage_name().length()-2)+""+posts.get(i).getImage_name().charAt(posts.get(i).getImage_name().length()-1);
             //System.out.println("image :"+posts.get(i).getImage_name()+" extension :"+extension.toLowerCase());
             if (posts.get(i).getType()==0 && posts.get(i).getArchive()==0){
