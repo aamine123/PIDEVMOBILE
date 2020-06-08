@@ -1,6 +1,8 @@
 package gui;
 
+import com.codename1.components.ImageViewer;
 import com.codename1.components.ScaleImageLabel;
+import com.codename1.io.FileSystemStorage;
 import com.codename1.ui.*;
 import com.codename1.ui.events.ActionEvent;
 import com.codename1.ui.events.ActionListener;
@@ -14,10 +16,14 @@ import entities.User;
 import services.ServiceCategory;
 import services.ServiceProduct;
 
+import java.io.IOException;
+
 public class addProduct extends BaseForm {
     private Resources theme;
     private ServiceProduct SP;
-
+    private String path;
+    private ImageViewer l;
+    private Container imgCtn;
     public addProduct(Resources theme) {
         this.theme = theme;
 
@@ -63,8 +69,31 @@ public class addProduct extends BaseForm {
         listens.setUIID("TextFieldBlack");
         addStringValue("Category", listens);
        // add(listens);
+//*************************image
 
-
+        Button getimage = new Button("Upload Image");
+        getimage.addActionListener(e -> {
+            Display.getInstance().openGallery(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent evt) {
+                    if (evt != null && evt.getSource() != null) {
+                        path = (String) evt.getSource();
+                        Image image = null;
+                        try {
+                            image = Image.createImage(FileSystemStorage.getInstance()
+                                    .openInputStream(path)).fill(125, 175);
+                            //imName=image.;
+                        } catch (IOException ex) {
+                            Dialog.show("Error", ex.getMessage(), "OK", null);
+                        }
+                        l = new ImageViewer(image);
+                        l.getStyle().setMarginLeft(40);
+                        imgCtn.add(l);
+                    }
+                }
+            }, Display.GALLERY_IMAGE);
+        });
+//*****************************/image
       Button add=new Button("add");
         addStringValue("add", add);
       add.addActionListener(new ActionListener() {

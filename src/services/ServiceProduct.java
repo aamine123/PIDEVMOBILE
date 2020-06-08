@@ -156,5 +156,21 @@ public class ServiceProduct {
         return resultOK;
     }
 
+    public boolean updateProduct(Product p,String categoryName,int validation){
+        String url= Statics.BASE_URL+"Products/updateProductMobile/"+p.getId()+"/"+p.getName()+"/"+p.getPrice()+"/"+
+                p.getUserId()+"/"+categoryName+"/"+validation;
+        System.out.println(url);
+        req.setUrl(url);
+        req.addResponseListener(new ActionListener<NetworkEvent>() {
+            @Override
+            public void actionPerformed(NetworkEvent evt) {
+                resultOK=req.getResponseCode()==200;
+                req.removeResponseListener(this);
+            }
+        });
+        NetworkManager.getInstance().addToQueueAndWait(req);
+        return resultOK;
+    }
+
 
 }

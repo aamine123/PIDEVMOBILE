@@ -14,6 +14,7 @@ import com.codename1.ui.util.Resources;
 import com.codename1.uikit.cleanmodern.BaseForm;
 import entities.Product;
 import services.ServiceProduct;
+import services.authuser;
 
 import java.io.IOException;
 
@@ -64,7 +65,7 @@ public class allProducts extends BaseForm {
             addButton(im, p.getName().toString(), false, 0, 0, p);
 
             Button Delete = new Button("Delete");
-           //addStringValue("Delete", Delete);
+
             Delete.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent evt) {
@@ -85,8 +86,15 @@ public class allProducts extends BaseForm {
 
                 }
             });
+
             Button btnAddToCart=new Button("add to cart");
-            addStringValue("add to cart", btnAddToCart);
+            if (authuser.ConnectedUser.getId()==p.getUserId()){
+                addStringValue("Delete", Delete);
+            }else{
+                addStringValue("add to cart", btnAddToCart);
+            }
+
+
             btnAddToCart.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent evt) {
@@ -168,7 +176,12 @@ public class allProducts extends BaseForm {
 
         add(cnt);
         image.addActionListener(e -> {
-            new productSingle(res, p,this).show();
+            if (authuser.ConnectedUser.getId()==p.getUserId()){
+                new updateProduct(res,p,this).show();
+            }else{
+                new productSingle(res, p,this).show();
+            }
+
         });
     }
 

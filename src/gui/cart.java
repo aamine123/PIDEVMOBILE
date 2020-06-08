@@ -4,6 +4,9 @@ import com.codename1.components.ScaleImageLabel;
 import com.codename1.db.Cursor;
 import com.codename1.db.Database;
 import com.codename1.db.Row;
+import com.codename1.io.FileSystemStorage;
+import com.codename1.io.Util;
+import com.codename1.messaging.Message;
 import com.codename1.ui.*;
 import com.codename1.ui.events.ActionEvent;
 import com.codename1.ui.events.ActionListener;
@@ -24,6 +27,8 @@ import entities.Product;
 import entities.User;
 import javafx.scene.control.Cell;
 import services.ServiceProduct;
+import services.authuser;
+import utils.Statics;
 //import utils.Email;
 
 import javax.swing.*;
@@ -35,7 +40,8 @@ public class cart extends BaseForm {
     int totaal=0;
     public cart(Resources theme,String msg) {
         this.theme = theme;
-        loggedInUser= new User(10,"eya.loukil","eya.loukil@esprit.tn","eya","loukil","31-12-1998","femme","biography");
+        loggedInUser= authuser.ConnectedUser;
+                //new User(10,"eya.loukil","eya.loukil@esprit.tn","eya","loukil","31-12-1998","femme","biography");
         Toolbar tb = new Toolbar(true);
         setToolbar(tb);
         getTitleArea().setUIID("Container");
@@ -145,10 +151,19 @@ public class cart extends BaseForm {
                                 System.out.println(u);
                                 String message="We are Taland team:\n" +
                                         "\n" +
-                                        "Hi "+u.getFirstname()+", we send you this mail to inform you that "+loggedInUser.getLastname()+"("+loggedInUser.getEmail()+") want to buy your product\n" +
+                                        "Hi "+u.getFirstname()+", I send you this mail to inform you that i want to buy your product\n" +
                                         ""+pr.getName()+".\n" +
                                         "confirm  \"http://127.0.0.1:8000/Products/getProducts/"+pr.getId()+" Here";
                             //Email email=new Email( "talandpidev@gmail.com",  "Tal123and!",  u.getEmail(),  "Taland team",  message);
+                                Message m=new Message(message);
+                                Display.getInstance().sendMessage(new String[]{u.getEmail()},"Sell you product on Taland",m);
+                                FileSystemStorage fs=FileSystemStorage.getInstance();
+                                String fileName=fs.getAppHomePath()+"pd_simple.pdf";
+                                if (!fs.exists(fileName)){
+                                    Util.downloadUrlToFile(Statics.BASE_URL+"/Products/mobilePDF", fileName, true);
+
+                                }
+                                Display.getInstance().execute(fileName);
 
                             }
                             db.execute("delete from cart");
