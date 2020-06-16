@@ -88,7 +88,6 @@ public class allsujets extends BaseForm {
                 List<Sujet> ss=ser.getAllTasks();
                 ss =  ss.stream().filter((Sujet v) ->v.getDescription_f().toUpperCase().startsWith(text.toUpperCase())).collect(Collectors.toList());
                 removeAll();
-                add(choix);
                 listsujet = new Container();
                 for (int i = 0; i < ss.size(); i++) {
                     listsujet.add(addItem(ss.get(i)));

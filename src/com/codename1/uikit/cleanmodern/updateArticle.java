@@ -1,22 +1,3 @@
-/*
- * Copyright (c) 2016, Codename One
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
- * documentation files (the "Software"), to deal in the Software without restriction, including without limitation
- * the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software,
- * and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in all copies or substantial portions
- * of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED,
- * INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A
- * PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT
- * HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF
- * CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE
- * OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
- */
-
 package com.codename1.uikit.cleanmodern;
 
 import entities.SessionUser;
@@ -24,85 +5,23 @@ import services.ServiceArticle;
 import com.codename1.components.ScaleImageLabel;
 import com.codename1.components.SpanLabel;
 import com.codename1.components.ToastBar;
-import com.codename1.messaging.Message;
 import com.codename1.ui.*;
-import com.codename1.ui.events.ActionEvent;
-import com.codename1.ui.events.ActionListener;
 import com.codename1.ui.layouts.*;
 import com.codename1.ui.plaf.Style;
-import com.codename1.ui.plaf.UIManager;
 import com.codename1.ui.spinner.Picker;
 import com.codename1.ui.util.Resources;
 import entities.Article;
 
-import com.codename1.io.FileSystemStorage;
-import com.codename1.io.Log;
-import com.codename1.io.Util;
-
-//import com.codename1.ext.filechooser.FileChoose;
-
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.Date;
-import java.util.LinkedHashMap;
-import java.util.Random;
 
-import com.codename1.capture.Capture;
-import com.codename1.components.InfiniteProgress;
-import com.codename1.io.MultipartRequest;
-import com.codename1.io.NetworkManager;
-
-
-/**
- * The newsfeed form
- *
- * @author Shai Almog
- */
-public class HomeArticle extends BaseForm {
+public class updateArticle extends BaseForm{
     int connected=15;
-    private String im ;
-    public HomeArticle(Resources res) {
-
-
-
+    private ArrayList<Article> listarticle;
+    private ServiceArticle serviceArticle;
+    public updateArticle(Resources res,Article d) {
 
         super("Add a new competition", BoxLayout.y());
-        Style s = UIManager.getInstance().getComponentStyle("TitleCommand");
-        FontImage icone = FontImage.createMaterial(FontImage.MATERIAL_IMAGE, s);
-        Button img = new Button("Upload Image",icone);
-        img.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent evt) {
-
-                try {
-
-
-                    String fileNameInServer = "";
-                    MultipartRequest cr = new MultipartRequest();
-                    String filepath = Capture.capturePhoto(-1, -1);
-                    cr.setUrl("http://localhost/uploadimage.php");
-                    cr.setPost(true);
-                    String mime = "image/jpeg";
-                    cr.addData("file", filepath, mime);;
-                    String out = new com.codename1.l10n.SimpleDateFormat("yyyyMMddhhmmss").format(new Date());
-                    cr.setFilename("file", out + ".jpg");//any unique name you want
-
-                    fileNameInServer += out + ".jpg";
-                    System.err.println("path2 =" + fileNameInServer);
-                    im =fileNameInServer ;
-                    InfiniteProgress prog = new InfiniteProgress();
-                    Dialog dlg = prog.showInifiniteBlocking();
-                    cr.setDisposeOnCompletion(dlg);
-                    NetworkManager.getInstance().addToQueueAndWait(cr);
-                } catch ( IOException ex) {
-                }
-            }
-
-
-        });
 
         Toolbar tb = new Toolbar(true);
         setToolbar(tb);
@@ -194,61 +113,43 @@ public class HomeArticle extends BaseForm {
 
 
 
+        serviceArticle = new ServiceArticle();
+        listarticle = new ArrayList<>();
+        //listarticle = servicedeal.getdealonly(d.getEventDescription());
 
 
 
-        Date d=new Date();
-        TextField tEventDescription = new TextField("","Nom article");
+        TextField tEventDescription = new TextField("",d.getNom_Article());
         tEventDescription.getAllStyles().setFgColor(0x000000);
-        TextField tCalendarName = new TextField("","Contenu");
+        TextField tCalendarName = new TextField("",d.getContenu_Article());
         tCalendarName.getAllStyles().setFgColor(0x000000);
-        TextField tTermID = new TextField("","Titre event");
-        tTermID.getAllStyles().setFgColor(0x000000);
-
-        // Picker start = new Picker();
-        //start.getAllStyles().setFgColor(0x000000);
-        //Picker tend = new Picker();
-        //tend.getAllStyles().setFgColor(0x000000);
-
-
-        // TextField timagename = new TextField("","ImageName",20, TextField.ANY);
-        // timagename.getAllStyles().setFgColor(0x000000);
-
-        Button submit = new Button("submit");
+      //  TextField tTermID = new TextField("",d.getTitre_Event());
+        //tTermID.getAllStyles().setFgColor(0x000000);
+        Date a =new Date();
+        Button submit = new Button("Update");
+        addStringValue("nom", tEventDescription);
+        addStringValue("contenu", tCalendarName);
 
 
-        addStringValue("Nom article", tEventDescription);
-        addStringValue("Contenu", tCalendarName);
-        addStringValue("Nom evenenment", tTermID);
-        // addStringValue("start", start);
-        //addStringValue("tend", tend);
-        //addStringValue("timagename", timagename);
 
         add(submit);
 
-        add(img);
+
 
         submit.addActionListener((e)->{
 
-                    ServiceArticle ser = new ServiceArticle();
+                    // System.out.println(tTermID.getText());
 
-
-
-
-                    try{
-                        Article article = new Article(SessionUser.loggedUser.getId(),tEventDescription.getText(),tCalendarName.getText(),im,tTermID.getText(),
-                                0,d.toString() );
-
-                        ser.ajoutArticle(article);
-                        Dialog.show("felicitation", " votre Article a ete ajoute", "ok", null);
-                    }catch(Exception ex){
-                        ex.getMessage();
-                    }
+                  //  Article aa =new Article(SessionUser.loggedUser.getId(),tEventDescription.getText(),tCalendarName.getText(),d.getImage_Article(),d.getTitre_Event()
+                    //        ,d.getNbrevue(),a.toString());
+            if(ServiceArticle.getInstance().modifierArticle(d.getId_Article(),tEventDescription.getText(),tCalendarName.getText(),res)){
+             //   a.showBack();
+               new Afficherarticle(res).show();
+            }
+                  //  ServiceArticle.getInstance().modifierArticle(aa,res);  // Deals a =  new Deals(res);
+                    //a.showBack();
                 }
         );
-
-
-
     }
 
 

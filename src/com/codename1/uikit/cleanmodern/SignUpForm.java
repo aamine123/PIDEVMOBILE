@@ -20,22 +20,24 @@
 package com.codename1.uikit.cleanmodern;
 
 import com.codename1.components.FloatingHint;
-import com.codename1.ui.Button;
-import com.codename1.ui.ComboBox;
-import com.codename1.ui.Container;
-import com.codename1.ui.Display;
-import com.codename1.ui.Form;
-import com.codename1.ui.Label;
-import com.codename1.ui.TextField;
-import com.codename1.ui.Toolbar;
+import com.codename1.components.InteractionDialog;
+import com.codename1.components.SpanLabel;
+import com.codename1.l10n.ParseException;
+import com.codename1.messaging.Message;
+import com.codename1.ui.*;
 import com.codename1.ui.events.ActionEvent;
 import com.codename1.ui.events.ActionListener;
+import com.codename1.ui.geom.Dimension;
 import com.codename1.ui.layouts.BorderLayout;
 import com.codename1.ui.layouts.BoxLayout;
 import com.codename1.ui.layouts.FlowLayout;
 import com.codename1.ui.list.DefaultListModel;
+import com.codename1.ui.spinner.Picker;
 import com.codename1.ui.util.Resources;
 import java.util.Vector;
+
+import entities.User;
+import javafx.scene.control.DatePicker;
 import services.authuser;
 import com.codename1.ui.validation.Validator;
 import com.codename1.ui.validation.LengthConstraint;
@@ -45,8 +47,12 @@ import static com.codename1.uikit.cleanmodern.SignInForm.username;
 
 
 public class SignUpForm extends BaseForm {
+
     public static TextField username,email,password,confirmPassword,prenom,nom;
+    public static DatePicker Date;
+    public static DatePicker datePicker ;
     public static ComboBox box;
+    // public static Picker picker;
     authuser auth = new authuser();
     public SignUpForm(Resources res) {
         super(new BorderLayout());
@@ -64,7 +70,9 @@ public class SignUpForm extends BaseForm {
         confirmPassword = new TextField("", "Confirm Password", 20, TextField.PASSWORD);
         nom = new TextField("", "nom", 20, TextField.ANY);
         prenom = new TextField("", "prenom", 20, TextField.ANY);
-        box = new ComboBox();
+        //  box = new ComboBox();
+        //DatePicker d=new DatePicker();
+        // picker =new Picker();
         username.setSingleLineTextArea(true);
         email.setSingleLineTextArea(true);
         password.setSingleLineTextArea(true);
@@ -72,10 +80,13 @@ public class SignUpForm extends BaseForm {
         nom.setSingleLineTextArea(true);
         prenom.setSingleLineTextArea(true);
 
+
+
         Validator val = new Validator();
 
         val.addConstraint(username, new LengthConstraint(4));
         String testusername="^\\(?([a-z]{3})\\)?";
+        String test="";
         val.addConstraint(username, new RegexConstraint(testusername, ""));
 
         val.addConstraint(password, new LengthConstraint(4));
@@ -91,7 +102,7 @@ public class SignUpForm extends BaseForm {
 
 
         val.addConstraint(email, RegexConstraint.validEmail());
-
+        // val.addConstraint(picker,new RegexConstraint(testusername, ""));
 
 
         Button next = new Button("Next");
@@ -110,15 +121,19 @@ public class SignUpForm extends BaseForm {
                 createLineSeparator(),
                 new FloatingHint(confirmPassword),
                 createLineSeparator(),
-
                 createLineSeparator(),
                 new FloatingHint(nom),
                 createLineSeparator(),
                 new FloatingHint(prenom),
                 createLineSeparator(),
+                createLineSeparator(),
+                // picker,
                 createLineSeparator()
+
+
         );
         content.setScrollableY(true);
+
         add(BorderLayout.CENTER, content);
         add(BorderLayout.SOUTH, BoxLayout.encloseY(
                 next,
@@ -129,8 +144,36 @@ public class SignUpForm extends BaseForm {
         next.addActionListener( new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent evt) {
-                //auth.RegisterUser(res);
-                new NewsfeedForm(res).show();
+                String nomm = nom.getText().toString();
+                String prenomm = prenom.getText().toString();
+                String emaill = email.getText().toString();
+                String paswordd = password.getText().toString();
+                String password2 = confirmPassword.getText().toString();
+                String usernamee = username.getText().toString();
+
+                if (nom.equals("") ) {
+                    InteractionDialog dlg = new InteractionDialog("Notification");
+                    dlg.setLayout(new BorderLayout());
+                    dlg.add(BorderLayout.CENTER, new SpanLabel("Le champ nom est vide! Veuillez le remplir."));
+                    Button close = new Button("Close");
+                    close.addActionListener((ee) -> dlg.dispose());
+                    dlg.addComponent(BorderLayout.SOUTH, close);
+                    Dimension pre = dlg.getContentPane().getPreferredSize();
+                    dlg.show(50, 100, 30, 30);
+                    return;
+                }
+                else {
+                    User u=new User(usernamee,emaill,paswordd,nomm,prenomm);
+                  //  System.out.println("amann"+u);
+                    auth.adduser(u);
+
+                    //  new SignInForm(res).show();
+
+                }
+
+
+                // auth.RegisterUser(res);
+                //
 
             }
         });

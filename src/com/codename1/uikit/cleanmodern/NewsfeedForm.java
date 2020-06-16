@@ -103,6 +103,9 @@ public class NewsfeedForm extends BaseForm {
         all.setUIID("SelectBar");
         RadioButton Forum = RadioButton.createToggle("Forum", barGroup);
         Forum.setUIID("SelectBar");
+        RadioButton Article = RadioButton.createToggle("Article", barGroup);
+        Article.setUIID("SelectBar");
+
        // RadioButton featured = RadioButton.createToggle("Featured", barGroup);
         //featured.setUIID("SelectBar");
         //RadioButton popular = RadioButton.createToggle("Popular", barGroup);
@@ -112,9 +115,11 @@ public class NewsfeedForm extends BaseForm {
         Label arrow = new Label(res.getImage("news-tab-down-arrow.png"), "Container");
         
         add(LayeredLayout.encloseIn(
-                GridLayout.encloseIn(4, all, Forum),
+                GridLayout.encloseIn(4, all, Article),
                 FlowLayout.encloseBottom(arrow)
         ));
+
+
 
         all.setSelected(true);
         arrow.setVisible(false);
@@ -124,6 +129,7 @@ public class NewsfeedForm extends BaseForm {
         });
         bindButtonSelection(all, arrow);
         bindButtonSelection(Forum, arrow);
+        bindButtonSelection(Article,arrow);
         //bindButtonSelection(featured, arrow);
         //bindButtonSelection(popular, arrow);
         //bindButtonSelection(myFavorite, arrow);
@@ -131,6 +137,13 @@ public class NewsfeedForm extends BaseForm {
             @Override
             public void actionPerformed(ActionEvent evt) {
                 new sujetslist(res).show();
+            }
+        });
+        Article.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent evt) {
+                Afficherarticle a =new Afficherarticle(res);
+                a.show();
             }
         });
         // special case for rotation

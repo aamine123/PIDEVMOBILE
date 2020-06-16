@@ -11,11 +11,7 @@ import com.codename1.io.ConnectionRequest;
 import com.codename1.io.Log;
 import com.codename1.io.NetworkEvent;
 import com.codename1.io.NetworkManager;
-import com.codename1.ui.FontImage;
-import com.codename1.ui.Form;
-import com.codename1.ui.Label;
-import com.codename1.ui.TextField;
-import com.codename1.ui.Toolbar;
+import com.codename1.ui.*;
 import com.codename1.ui.events.ActionListener;
 import com.codename1.ui.layouts.BorderLayout;
 import com.codename1.ui.plaf.Style;
@@ -53,7 +49,7 @@ public class ApiStat {
             String str = new String(con.getResponseData());
             // Dialog.show("Succés", "Article", "ok", null);
             System.out.println(str);
-            System.out.println("aman"+str);
+            System.out.println("aa"+str);
             l1.setText(str);
             System.out.println(l1.getText());
 
@@ -104,6 +100,7 @@ public class ApiStat {
         NetworkManager.getInstance().addToQueueAndWait(con3);
 
         double v3 = (double) Float.parseFloat(l3.getText());
+        Button back =new Button();
 
         series.add("Formation", v1);
         series.add("Esprit int", v2);
@@ -150,7 +147,7 @@ public class ApiStat {
         Style s = UIManager.getInstance().getComponentStyle("TitleCommand");
         FontImage icon = FontImage.createMaterial(FontImage.MATERIAL_HOME, s);
 
-
+        Button back=new Button("back");
         return f;
     }
 

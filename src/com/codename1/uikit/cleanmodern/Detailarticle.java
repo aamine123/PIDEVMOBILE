@@ -32,7 +32,10 @@ import java.util.Random;
 
 import static com.codename1.uikit.cleanmodern.SignInForm.res;
 
-public class Detailarticle extends Form {
+public class Detailarticle extends BaseForm {
+    String accountSID="AC1f37afbad566e8db837a22e39bb1fe1d";
+    String authToken="194af0df2307a9be4d74601dac3b3a30";
+    String fromPhone="+14806370734";
 
 
         private Resources res;
@@ -43,7 +46,7 @@ public class Detailarticle extends Form {
         Toolbar.setGlobalToolbar(true);
 
         this.getToolbar().addMaterialCommandToLeftBar("Back",FontImage.MATERIAL_ARROW_BACK,(e)-> {
-            AffichageArticle w =new AffichageArticle(theme);
+            Afficherarticle w =new Afficherarticle(theme);
             w.show();
         });
         setTitle(ar.getNom_Article());
@@ -137,22 +140,16 @@ public class Detailarticle extends Form {
         share.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent evt) {
-                String accountSID = "AC1f37afbad566e8db837a22e39bb1fe1d";
-                String authToken = "f22ee3f103854b8a783006cbc0fcd0a4";
-                String fromPhone = "+14806370734";
-                Random r = new Random();
-                String val = "" + r.nextInt(10000);
-                while(val.length() < 4) {
-                    val = "0" + val;
-                }
+
 
 
 
                 Response<Map> result = Rest.post("https://api.twilio.com/2010-04-01/Accounts/" + accountSID + "/Messages.json").
-                        queryParam("To", fromPhone).
+                        queryParam("To", "+21924614285").
                         queryParam("From", fromPhone).
-                        queryParam("Body", val).
-                        basicAuth(accountSID, authToken).getAsJsonMap();
+                        queryParam("Body", "message 1").
+                     header("Authorization", "Basic " + Base64.encodeNoNewline((accountSID + ":" + authToken).getBytes())).
+                        getAsJsonMap();;
                // EmailShare s=new EmailShare();
                //String a= FileSystemStorage.getInstance().getAppHomePath()+ar.getImage_Article();
                 //s.share(ar.getNom_Article(),a,ar.getContenu_Article());

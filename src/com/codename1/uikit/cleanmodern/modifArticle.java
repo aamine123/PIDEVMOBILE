@@ -76,7 +76,7 @@ public class modifArticle extends Form {
                 ar.setImage_Article(ar.getImage_Article());
                 ar.setNom_Article(ar.getNom_Article());
                 ar.setTitre_Event(ar.getTitre_Event());
-                ser.modifierArticle(ar,res);
+              //  ser.modifierArticle(ar.getId_Article(),ar.getNom_Article(),ar.getContenu_Article(),res);
             }
         });
         addAll(nomarticle,contenu,titreevent,confirmer);

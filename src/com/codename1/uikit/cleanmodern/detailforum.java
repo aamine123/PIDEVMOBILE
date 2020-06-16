@@ -109,7 +109,7 @@ public class detailforum extends BaseForm {
       //  Label a = new Label("  "+ vid.getNbre_jaime());
        ImageViewer imjaime = new ImageViewer(a.getImage("heart.png"));
         Label nbjaime = new Label("Nombre Jaime:"+ vid.getNbre_jaime());
-       imjaime.addPointerReleasedListener(new ActionListener() {
+       nbjaime.addPointerPressedListener(new ActionListener() {
            @Override
            public void actionPerformed(ActionEvent evt) {
                ser.like(vid.getId_f());

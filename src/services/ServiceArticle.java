@@ -5,6 +5,7 @@
  */
 package services;
 
+import com.codename1.uikit.cleanmodern.detailarticletemplate;
 import entities.Article;
 import com.codename1.io.CharArrayReader;
 import com.codename1.io.ConnectionRequest;
@@ -16,6 +17,9 @@ import com.codename1.ui.Dialog;
 import com.codename1.ui.events.ActionListener;
 import com.codename1.ui.util.Resources;
 import com.codename1.uikit.cleanmodern.AffichageArticle;
+import entities.Commentaire;
+import entities.User;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -26,6 +30,23 @@ import java.util.Map;
  * @author Administrator
  */
 public class ServiceArticle {
+
+
+    public ArrayList<Article> Articles;
+    public static ServiceArticle instance=null;
+    public boolean resultOK;
+    private ConnectionRequest req;
+
+    public ServiceArticle() {
+        req = new ConnectionRequest();
+    }
+
+    public static ServiceArticle getInstance() {
+        if (instance == null) {
+            instance = new ServiceArticle();
+        }
+        return instance;
+    }
 
 
     public void ajoutArticle(Article ar) {
@@ -134,24 +155,23 @@ public class ServiceArticle {
     }
 
 
-    public void modifierArticle(Article ta,Resources res) {
+    public boolean modifierArticle(int id,String nom,String description,Resources res) {
         ConnectionRequest con = new ConnectionRequest();
-        String Url = "http://localhost/talandWEB/web/app_dev.php/Article/updateArticle/"+ ta.getId_Article()+"?titre=" + ta.getNom_Article()
-                + "&contenuArticle=" + ta.getContenu_Article()
-                + "&imageArticle=" + ta.getImage_Article()
-                + "&titreEvent="+  ta.getTitre_Event();
+        String Url = "http://localhost/talandWEB/web/app_dev.php/Article/updateArticle/"+ id+"/" + nom
+                + "/" + description;
         con.setUrl(Url);
 
         con.addResponseListener((e) -> {
             String str = new String(con.getResponseData());
-            System.out.println(str);
+          //  System.out.println(str);
             Dialog.show("Succés", "Article modifié", "ok", null);
 
-            AffichageArticle a =new AffichageArticle(res);
-            a.show();
+        //    detailarticletemplate a =new detailarticletemplate(res,ta);
+          //  a.show();
 
         });
         NetworkManager.getInstance().addToQueueAndWait(con);
+        return true;
     }
 
     public void nbvue(Article ta,Resources res) {
